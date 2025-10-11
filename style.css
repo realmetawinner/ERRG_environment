@@ -2,15 +2,15 @@
 body, html {
     margin: 0;
     padding: 0;
-    width: 100vw; /* 뷰포트 너비 */
-    height: 100vh; /* 뷰포트 높이 */
-    overflow: hidden; /* 스크롤바 제거 */
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
     background-color: #000;
 }
 
 /* ===== 전체 화면을 차지하는 메인 컨테이너 ===== */
 .container {
-    position: relative; /* 자식 요소들의 기준점 */
+    position: relative;
     width: 100%;
     height: 100%;
     display: flex;
@@ -20,37 +20,35 @@ body, html {
 
 /* ===== 카메라 영상 (가장 중요!) ===== */
 #camera-view {
-    /* 화면을 꽉 채우는 핵심 속성 */
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 비율을 유지하면서 화면을 가득 채움 (가장 중요!) */
+    object-fit: cover; /* 비율을 유지하면서 화면을 가득 채움 */
     z-index: 1; /* 가장 아래에 위치 */
 }
 
 /* ===== 필터 이미지 ===== */
 .overlay-image {
-    /* 화면을 꽉 채우고 카메라 위에 위치 */
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 2; /* 카메라(z-index: 1) 위에 위치 */
+    z-index: 2; /* 카메라 위에 위치 */
     pointer-events: none; /* 이미지 클릭 방지 */
 }
 
 /* ===== 버튼 영역 ===== */
 .controls {
     position: absolute;
-    bottom: 30px; /* 하단 여백 */
+    bottom: 30px;
     left: 50%;
-    transform: translateX(-50%); /* 정확한 중앙 정렬 */
+    transform: translateX(-50%);
     z-index: 10; /* 모든 요소 위에 위치 */
     display: flex;
-    gap: 15px; /* 버튼 사이 간격 */
+    gap: 15px;
 }
 
 .controls button {
@@ -72,6 +70,9 @@ body, html {
     background-color: #4CAF50; /* 초록색 */
 }
 
-#share-button {
-    background-color: #008CBA; /* 파란색 */
+/* 카메라 전환 버튼 스타일 */
+#switch-camera-button {
+    background-color: #f0ad4e; /* 주황색 */
+    font-size: 20px;
+    padding: 10px 15px;
 }
