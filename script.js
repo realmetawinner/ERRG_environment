@@ -4,10 +4,10 @@ const captureButton = document.getElementById('capture-button');
 const switchCameraButton = document.getElementById('switch-camera-button');
 const hiddenCanvas = document.getElementById('hidden-canvas');
 const ctx = hiddenCanvas.getContext('2d');
-const cameraContainer = document.querySelector('.camera-container'); // 컨테이너 참조
+const cameraContainer = document.querySelector('.camera-container');
 
 let currentStream;
-let currentFacingMode = 'user';
+let currentFacingMode = 'user'; // 시작을 전면 카메라('user')로 설정
 
 async function startCamera() {
     if (currentStream) {
@@ -27,7 +27,7 @@ async function startCamera() {
 
 switchCameraButton.addEventListener('click', () => {
     currentFacingMode = currentFacingMode === 'user' ? 'environment' : 'user';
-    // 전면 카메라일 때만 좌우 반전 적용
+    // CSS transform을 직접 제어하여 화면에 보이는 카메라 영상만 반전시킴
     cameraView.style.transform = currentFacingMode === 'user' ? 'scaleX(-1)' : 'scaleX(1)';
     startCamera();
 });
@@ -38,42 +38,61 @@ captureButton.addEventListener('click', () => {
         return;
     }
 
-    // 화면에 표시되는 컨테이너의 실제 크기를 가져옴
-    const width = cameraContainer.clientWidth;
-    const height = cameraContainer.clientHeight;
-    hiddenCanvas.width = width;
-    hiddenCanvas.height = height;
+    // 화면에 표시되는 camera-container의 실제 크기를 가져옴
+    const containerWidth = cameraContainer.clientWidth;
+    const containerHeight = cameraContainer.clientHeight;
 
-    // 1. 카메라 영상 그리기 (object-fit: cover 로직 구현)
+    hiddenCanvas.width = containerWidth;
+    hiddenCanvas.height = containerHeight;
+
+    // 캔버스 초기화
+    ctx.clearRect(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+
+    ctx.save(); // 현재 캔버스 상태 저장
+
+    // 1. 카메라 영상 그리기 (컨테이너 크기에 맞춰 object-fit: cover 로직 구현)
     const videoRatio = cameraView.videoWidth / cameraView.videoHeight;
-    const canvasRatio = width / height;
+    const containerRatio = containerWidth / containerHeight;
     let sx = 0, sy = 0, sWidth = cameraView.videoWidth, sHeight = cameraView.videoHeight;
+    let dx = 0, dy = 0, dWidth = containerWidth, dHeight = containerHeight;
 
-    if (videoRatio > canvasRatio) { // 비디오가 더 넓으면
-        sWidth = cameraView.videoHeight * canvasRatio;
+    if (videoRatio > containerRatio) { // 비디오가 컨테이너보다 가로가 긴 경우
+        sHeight = cameraView.videoHeight;
+        sWidth = sHeight * containerRatio;
         sx = (cameraView.videoWidth - sWidth) / 2;
-    } else { // 비디오가 더 높으면
-        sHeight = cameraView.videoWidth / canvasRatio;
+    } else { // 비디오가 컨테이너보다 세로가 긴 경우
+        sWidth = cameraView.videoWidth;
+        sHeight = sWidth / containerRatio;
         sy = (cameraView.videoHeight - sHeight) / 2;
     }
 
-    ctx.save();
-    // 좌우 반전 상태를 캔버스에 동일하게 적용
-    if (currentFacingMode === 'user') {
-        ctx.translate(width, 0);
+    // 카메라 좌우 반전 적용
+    if (currentFacingMode === 'user') { // 전면 카메라일 때만
+        ctx.translate(containerWidth, 0);
         ctx.scale(-1, 1);
     }
-    ctx.drawImage(cameraView, sx, sy, sWidth, sHeight, 0, 0, width, height);
-    ctx.restore();
 
-    // 2. PNG 프레임 모양대로 잘라내기 (마스킹)
-    ctx.globalCompositeOperation = 'destination-in';
-    ctx.drawImage(overlayImage, 0, 0, width, height);
+    ctx.drawImage(cameraView, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+    ctx.restore(); // 캔버스 상태 복원
 
-    // 3. PNG 프레임 테두리 다시 그리기
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.drawImage(overlayImage, 0, 0, width, height);
-    
+    // 2. PNG 프레임 그리기 (PNG 비율 유지)
+    // CSS의 object-fit: contain 로직을 캔버스에 구현
+    const imgNaturalRatio = overlayImage.naturalWidth / overlayImage.naturalHeight;
+    let imgDrawWidth, imgDrawHeight, imgX, imgY;
+
+    if (imgNaturalRatio > containerRatio) { // 이미지가 컨테이너보다 가로가 긴 경우
+        imgDrawWidth = containerWidth;
+        imgDrawHeight = containerWidth / imgNaturalRatio;
+        imgX = 0;
+        imgY = (containerHeight - imgDrawHeight) / 2;
+    } else { // 이미지가 컨테이너보다 세로가 긴 경우
+        imgDrawHeight = containerHeight;
+        imgDrawWidth = containerHeight * imgNaturalRatio;
+        imgX = (containerWidth - imgDrawWidth) / 2;
+        imgY = 0;
+    }
+    ctx.drawImage(overlayImage, imgX, imgY, imgDrawWidth, imgDrawHeight);
+
     // 최종 이미지 다운로드
     const dataURL = hiddenCanvas.toDataURL('image/png');
     const a = document.createElement('a');
@@ -82,8 +101,8 @@ captureButton.addEventListener('click', () => {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+
     alert("사진이 갤러리에 저장되었습니다!");
 });
 
-// 페이지 로드 시 카메라 시작
 startCamera();
