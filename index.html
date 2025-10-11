@@ -7,14 +7,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <video id="camera-view" autoplay playsinline></video>
-        <img src="미션인증용이미지.png" alt="미션 인증 프레임" class="overlay-image">
-    </div>
-    
-    <div class="controls">
-        <button id="capture-button">사진 저장</button>
-        <button id="switch-camera-button">카메라전환🔄</button>
+    <div class="app-container">
+        
+        <div class="camera-container">
+            <video id="camera-view" autoplay playsinline></video>
+            <img src="미션인증용이미지.png" alt="미션 인증 프레임" class="overlay-image">
+        </div>
+        
+        <div class="controls">
+            <button id="capture-button">사진 저장</button>
+            <button id="switch-camera-button">카메라전환</button>
+        </div>
+
     </div>
 
     <canvas id="hidden-canvas" style="display:none;"></canvas>
