@@ -1,3 +1,44 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* 스크롤바가 생기지 않도록 함 */
+    background-color: #000; /* 배경색을 검정으로 설정하여 빈 공간 없음 */
+}
+
+/* 전체 화면 컨테이너 */
+.container {
+    position: relative;
+    width: 100vw; /* 뷰포트 너비의 100% */
+    height: 100vh; /* 뷰포트 높이의 100% */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* 컨테이너를 넘어가는 내용 숨기기 */
+}
+
+/* 카메라 비디오 요소 */
+#camera-view {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 영상 비율을 유지하면서 컨테이너를 가득 채움 (중요!) */
+    position: absolute; /* .container를 기준으로 배치 */
+    top: 0;
+    left: 0;
+}
+
+/* 오버레이 이미지 */
+.overlay-image {
+    position: absolute; /* .container를 기준으로 배치 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 이미지 뒤의 비디오를 터치할 수 있도록 함 */
+    z-index: 2; /* 카메라 영상 위에 보이도록 z-index 설정 */
+}
+
 /* 버튼 컨트롤 영역 */
 .controls {
     position: absolute;
