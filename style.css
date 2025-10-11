@@ -1,80 +1,77 @@
+/* ===== 기본 설정 ===== */
 body, html {
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden; /* 스크롤바가 생기지 않도록 함 */
-    background-color: #000; /* 배경색을 검정으로 설정하여 빈 공간 없음 */
+    width: 100vw; /* 뷰포트 너비 */
+    height: 100vh; /* 뷰포트 높이 */
+    overflow: hidden; /* 스크롤바 제거 */
+    background-color: #000;
 }
 
-/* 전체 화면 컨테이너 */
+/* ===== 전체 화면을 차지하는 메인 컨테이너 ===== */
 .container {
-    position: relative;
-    width: 100vw; /* 뷰포트 너비의 100% */
-    height: 100vh; /* 뷰포트 높이의 100% */
+    position: relative; /* 자식 요소들의 기준점 */
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* 컨테이너를 넘어가는 내용 숨기기 */
 }
 
-/* 카메라 비디오 요소 */
+/* ===== 카메라 영상 (가장 중요!) ===== */
 #camera-view {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* 영상 비율을 유지하면서 컨테이너를 가득 채움 (중요!) */
-    position: absolute; /* .container를 기준으로 배치 */
+    /* 화면을 꽉 채우는 핵심 속성 */
+    position: absolute;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 비율을 유지하면서 화면을 가득 채움 (가장 중요!) */
+    z-index: 1; /* 가장 아래에 위치 */
 }
 
-/* 오버레이 이미지 */
+/* ===== 필터 이미지 ===== */
 .overlay-image {
-    position: absolute; /* .container를 기준으로 배치 */
+    /* 화면을 꽉 채우고 카메라 위에 위치 */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* 이미지 뒤의 비디오를 터치할 수 있도록 함 */
-    z-index: 2; /* 카메라 영상 위에 보이도록 z-index 설정 */
+    z-index: 2; /* 카메라(z-index: 1) 위에 위치 */
+    pointer-events: none; /* 이미지 클릭 방지 */
 }
 
-/* 버튼 컨트롤 영역 */
+/* ===== 버튼 영역 ===== */
 .controls {
     position: absolute;
-    bottom: 20px; /* 화면 하단에서 20px 위로 */
+    bottom: 30px; /* 하단 여백 */
     left: 50%;
-    transform: translateX(-50%); /* 가운데 정렬 */
-    z-index: 10; /* 다른 요소들 위에 보이도록 */
+    transform: translateX(-50%); /* 정확한 중앙 정렬 */
+    z-index: 10; /* 모든 요소 위에 위치 */
     display: flex;
     gap: 15px; /* 버튼 사이 간격 */
 }
 
 .controls button {
-    background-color: #4CAF50; /* 버튼 배경색 (예: 초록색) */
-    color: white; /* 글자색 */
-    border: none;
     padding: 12px 25px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    color: white;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 8px; /* 둥근 모서리 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-    transition: background-color 0.3s ease; /* 호버 효과 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
 }
 
-.controls button:hover {
-    background-color: #45a049; /* 호버 시 색상 변경 */
+.controls button:active {
+    transform: scale(0.95); /* 클릭 효과 */
 }
 
-/* SNS 공유 버튼은 다른 색상으로 */
+#capture-button {
+    background-color: #4CAF50; /* 초록색 */
+}
+
 #share-button {
-    background-color: #008CBA; /* 예: 파란색 */
-}
-
-#share-button:hover {
-    background-color: #007bb5;
+    background-color: #008CBA; /* 파란색 */
 }
