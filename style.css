@@ -25,17 +25,19 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* 비율을 유지하면서 화면을 가득 채움 */
+    object-fit: cover; /* 영상 비율을 유지하면서 화면을 가득 채움 */
     z-index: 1; /* 가장 아래에 위치 */
+    transform: scaleX(-1); /* 카메라 좌우 반전 기본 적용 */
 }
 
-/* ===== 필터 이미지 ===== */
+/* ===== 필터 이미지 (PNG 비율 유지) ===== */
 .overlay-image {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    object-fit: contain; /* PNG 비율을 유지하면서 컨테이너 안에 맞춤 (중요!) */
     z-index: 2; /* 카메라 위에 위치 */
     pointer-events: none; /* 이미지 클릭 방지 */
 }
@@ -63,16 +65,15 @@ body, html {
 }
 
 .controls button:active {
-    transform: scale(0.95); /* 클릭 효과 */
+    transform: scale(0.95);
 }
 
 #capture-button {
-    background-color: #4CAF50; /* 초록색 */
+    background-color: #4CAF50;
 }
 
-/* 카메라 전환 버튼 스타일 */
 #switch-camera-button {
-    background-color: #f0ad4e; /* 주황색 */
+    background-color: #f0ad4e;
     font-size: 20px;
     padding: 10px 15px;
 }
