@@ -1,34 +1,49 @@
-/* AR 화면이 전체를 차지하도록 설정 */
 body { 
     margin: 0; 
-    overflow: hidden; 
+    overflow: hidden;
+    /* 전체 UI를 중앙 정렬하기 위한 Flexbox 설정 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #333; /* AR 영역 외 배경색 */
 }
 
-/* 버튼을 담을 컨테이너 스타일 */
+/* AR Scene을 담을 고정된 크기의 컨테이너 (3:4 비율) */
+#ar-container {
+    position: relative;
+    width: 80vw;   /* 화면 너비의 80%를 기준으로 설정 */
+    max-width: 450px; /* PC 화면 등에서 너무 커지지 않도록 최대 너비 제한 */
+    
+    /* --- 이 부분이 핵심 수정 사항입니다 --- */
+    aspect-ratio: 3 / 4; /* 너비와 높이의 비율을 3:4로 강제 */
+    
+    overflow: hidden; /* 컨테이너를 벗어나는 내용은 숨김 */
+    border: 2px solid white; /* 영역을 시각적으로 표시 */
+}
+
+/* a-scene은 컨테이너에 꽉 차도록 설정 */
+a-scene {
+    width: 100%;
+    height: 100%;
+}
+
+/* 버튼 컨테이너 (AR 컨테이너와 독립적으로 배치) */
 .button-container {
-    position: absolute; /* 카메라 화면 위에 고정 */
-    bottom: 50px;       /* 화면 하단에서 50px 위로 */
-    left: 0;
-    right: 0;
-    text-align: center; /* 버튼 중앙 정렬 */
-    z-index: 10;        /* AR 화면보다 위에 보이도록 설정 */
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
 }
 
-/* 실제 HTML 버튼 스타일 */
 #action-button {
-    display: none; /* 처음에는 버튼을 숨김 */
+    display: none;
     padding: 15px 30px;
     font-size: 18px;
-    font-weight: bold;
     color: white;
-    background-color: #4CAF50; /* 초록색 계열 */
+    background-color: #4CAF50;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: background-color 0.3s;
-}
-
-#action-button:hover {
-    background-color: #45a049; /* 마우스를 올리면 더 어두운 초록색 */
 }
