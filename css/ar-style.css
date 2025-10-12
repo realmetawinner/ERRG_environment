@@ -3,9 +3,15 @@ body {
     overflow: hidden;
 }
 
-/* AR.js가 생성하는 video 요소의 스타일을 강제로 덮어쓰기 */
+/* AR.js가 생성하는 video 요소의 스타일을 강제로 덮어쓰기 (가장 중요!) */
 a-scene video {
-    object-fit: contain !important;
+    width: 100% !important;
+    height: 100% !important;
+    /* 'contain'으로 설정하여 영상이 잘리지 않고 1배율로 보이게 함 */
+    object-fit: contain !important; 
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
 }
 
 /* 버튼 컨테이너 */
@@ -18,9 +24,10 @@ a-scene video {
 }
 
 #action-button {
-    display: none;
+    display: none; /* 처음에는 버튼을 숨김 */
     padding: 15px 30px;
     font-size: 18px;
+    font-weight: bold;
     color: white;
     background-color: #4CAF50;
     border: none;
