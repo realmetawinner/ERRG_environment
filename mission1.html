@@ -3,22 +3,86 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Image Tracking</title>
+    <title>AR 타겟 인식 및 버튼 생성</title>
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+    <style>
+        /* AR 화면이 전체를 차지하도록 설정 */
+        body { margin: 0; overflow: hidden; }
+
+        /* 버튼을 담을 컨테이너 스타일 */
+        .button-container {
+            position: absolute; /* 카메라 화면 위에 고정 */
+            bottom: 50px;       /* 화면 하단에서 50px 위로 */
+            left: 0;
+            right: 0;
+            text-align: center; /* 버튼 중앙 정렬 */
+            z-index: 10;        /* AR 화면보다 위에 보이도록 설정 */
+        }
+
+        /* 실제 HTML 버튼 스타일 */
+        #action-button {
+            display: none; /* 처음에는 버튼을 숨김 */
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            background-color: #4CAF50; /* 초록색 계열 */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: background-color 0.3s;
+        }
+
+        #action-button:hover {
+            background-color: #45a049; /* 마우스를 올리면 더 어두운 초록색 */
+        }
+    </style>
 </head>
-<body style="margin : 0px; overflow: hidden;">
+<body>
 
-    <a-scene embedded arjs>
-
-        <a-marker type='pattern' url='pattern-marker.patt'>
-
-            <a-image src="overlay-image.png" rotation="-90 0 0" scale="1 1 1"></a-image>
-
+    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+        
+        <a-marker id="ar-marker" type='pattern' url='pattern-marker.patt'>
+            
+            <a-image src="images/overlay-image.png" rotation="-90 0 0" scale="1 1 1"></a-image>
+            
         </a-marker>
 
         <a-entity camera></a-entity>
-
     </a-scene>
+
+    <div class="button-container">
+        <button id="action-button">다음 페이지로 이동</button>
+    </div>
+
+    <script>
+        // 웹페이지가 완전히 로드된 후 스크립트 실행
+        window.addEventListener('load', function () {
+            const marker = document.getElementById('ar-marker');
+            const button = document.getElementById('action-button');
+
+            // 이벤트: 카메라가 마커(타겟)를 찾았을 때
+            marker.addEventListener('markerFound', function() {
+                console.log('타겟을 찾았습니다!');
+                button.style.display = 'block'; // 버튼을 보여줌
+            });
+
+            // 이벤트: 카메라가 마커(타겟)를 놓쳤을 때
+            marker.addEventListener('markerLost', function() {
+                console.log('타겟을 놓쳤습니다.');
+                button.style.display = 'none'; // 버튼을 다시 숨김
+            });
+
+            // 이벤트: HTML 버튼이 클릭되었을 때
+            button.addEventListener('click', function() {
+                console.log('버튼이 클릭되었습니다!');
+                // 지정된 페이지로 이동
+                window.location.href = 'room2.html'; // <-- 이 부분을 원하는 페이지로 바꾸세요
+            });
+        });
+    </script>
 </body>
 </html>
