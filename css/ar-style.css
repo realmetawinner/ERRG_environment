@@ -1,31 +1,36 @@
 body { 
     margin: 0; 
     overflow: hidden;
-    /* 전체 UI를 중앙 정렬하기 위한 Flexbox 설정 */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     background-color: #333; /* AR 영역 외 배경색 */
+    /* 모바일에서 스크롤 방지 */
+    touch-action: manipulation;
 }
 
 /* AR Scene을 담을 고정된 크기의 컨테이너 (3:4 비율) */
 #ar-container {
     position: relative;
-    width: 80vw;   /* 화면 너비의 80%를 기준으로 설정 */
-    max-width: 450px; /* PC 화면 등에서 너무 커지지 않도록 최대 너비 제한 */
-    
-    /* --- 이 부분이 핵심 수정 사항입니다 --- */
+    width: 95vw;   /* 화면 너비의 95% */
+    max-width: 600px; /* 최대 크기 제한 */
     aspect-ratio: 3 / 4; /* 너비와 높이의 비율을 3:4로 강제 */
-    
     overflow: hidden; /* 컨테이너를 벗어나는 내용은 숨김 */
     border: 2px solid white; /* 영역을 시각적으로 표시 */
+    box-sizing: border-box; /* 패딩, 보더가 너비/높이에 포함되도록 */
 }
 
-/* a-scene은 컨테이너에 꽉 차도록 설정 */
-a-scene {
-    width: 100%;
-    height: 100%;
+/* AR.js가 생성하는 캔버스와 비디오 요소에 직접 스타일 적용 */
+a-scene,
+a-scene canvas,
+a-scene video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important; /* 여기를 다시 한번 강조 */
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
 }
 
 /* 버튼 컨테이너 (AR 컨테이너와 독립적으로 배치) */
