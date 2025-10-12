@@ -1,3 +1,4 @@
+// 웹페이지가 완전히 로드된 후 스크립트 실행
 window.addEventListener('load', function () {
     const marker = document.getElementById('ar-marker');
     const button = document.getElementById('action-button');
@@ -17,6 +18,7 @@ window.addEventListener('load', function () {
     // 이벤트: HTML 버튼이 클릭되었을 때
     button.addEventListener('click', function() {
         console.log('버튼이 클릭되었습니다!');
-        window.location.href = 'room2.html'; 
+        // 지정된 페이지로 이동
+        window.location.href = 'room2.html'; // <-- 이 부분을 원하는 페이지로 바꾸세요
     });
 });
