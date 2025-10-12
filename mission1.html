@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-g">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>AR 타겟 인식 - 최종 해결</title>
     
@@ -12,14 +12,12 @@
 </head>
 <body>
 
-    <div id="ar-container">
-        <a-scene id="ar-scene" embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-            <a-marker id="ar-marker" type='pattern' url='person1.patt'>
-                <a-image src="images/overlay-person1.png" rotation="-90 0 0" scale="1 1 1"></a-image>
-            </a-marker>
-            <a-entity camera></a-entity>
-        </a-scene>
-    </div>
+    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+        <a-marker id="ar-marker" type='pattern' url='person1.patt'>
+            <a-image src="images/overlay-person1.png" rotation="-90 0 0" scale="1 1 1"></a-image>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
 
     <div class="button-container">
         <button id="action-button">다음 페이지로 이동</button>
