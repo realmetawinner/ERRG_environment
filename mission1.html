@@ -12,7 +12,7 @@
 </head>
 <body>
 
-    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; displayWidth: 720; displayHeight: 1280;">
+    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
         
         <a-marker id="ar-marker" type='pattern' url='person1.patt'>
             
@@ -28,5 +28,21 @@
     </div>
 
     <script src="js/ar-logic.js"></script>
+
+    <script>
+        window.addEventListener('load', function() {
+            const scene = document.querySelector('a-scene');
+            // AR.js Scene이 완전히 로드될 때까지 기다립니다.
+            scene.addEventListener('loaded', function () {
+                // AR.js가 생성한 video 태그를 찾습니다.
+                const video = document.querySelector('video');
+                if (video) {
+                    console.log('Video element found. Applying object-fit: contain.');
+                    // video 요소의 스타일을 'contain'으로 설정합니다.
+                    video.style.objectFit = 'contain';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
