@@ -9,6 +9,13 @@
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
     <link rel="stylesheet" href="css/ar-style.css">
+
+    <style>
+        /* AR.js가 생성하는 비디오 요소의 스타일을 강제로 덮어쓰기 */
+        a-scene video {
+            object-fit: contain !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -18,7 +25,7 @@
             
             <a-image src="images/overlay-person1.png" rotation="-90 0 0" scale="1 1 1"></a-image>
             
-        </a-marker>
+        </marker>
 
         <a-entity camera></a-entity>
     </a-scene>
@@ -29,20 +36,5 @@
 
     <script src="js/ar-logic.js"></script>
 
-    <script>
-        window.addEventListener('load', function() {
-            const scene = document.querySelector('a-scene');
-            // AR.js Scene이 완전히 로드될 때까지 기다립니다.
-            scene.addEventListener('loaded', function () {
-                // AR.js가 생성한 video 태그를 찾습니다.
-                const video = document.querySelector('video');
-                if (video) {
-                    console.log('Video element found. Applying object-fit: contain.');
-                    // video 요소의 스타일을 'contain'으로 설정합니다.
-                    video.style.objectFit = 'contain';
-                }
-            });
-        });
-    </script>
 </body>
 </html>
