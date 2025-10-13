@@ -1,76 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AR 웹앱 (최종 안정화 버전)</title>
-  
-  <style>
-    body { margin: 0; overflow: hidden; }
-    #startButtonContainer {
-      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      display: flex; justify-content: center; align-items: center;
-      background-color: #333; z-index: 10;
-    }
-    #startButton {
-      padding: 20px 40px; font-size: 1.5em; background-color: #4CAF50;
-      color: white; border: none; border-radius: 10px; cursor: pointer;
-    }
-    a-scene {
-      display: none; /* 시작 전에는 AR 씬 숨기기 */
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>방탈출 - 첫 번째 방</title>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Gaegu', cursive;
+            background-color: #2c3e50;
+            color: white;
+            display: flex;
+            flex-direction: column; /* 콘텐츠를 세로로 배치 */
+        }
+        /* AR 화면을 담는 iframe */
+        #ar-frame {
+            width: 100%;
+            height: 70%; /* 화면의 70%는 AR 카메라 */
+            border: none;
+        }
+        /* 하단 컨트롤 영역 */
+        .control-panel {
+            width: 100%;
+            height: 30%; /* 화면의 30%는 문제와 정답 입력창 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        p { font-size: 1.2em; margin: 10px 0; }
+        #answer-box {
+            font-family: 'Gaegu', cursive;
+            font-size: 1.5em;
+            padding: 10px;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
 
-  <div id="startButtonContainer">
-    <button id="startButton">AR 시작하기</button>
-  </div>
+    <iframe
+      id="ar-frame"
+      src="https://realmetawinner.8thwall.app/turtle-ar-project/"
+      allowfullscreen
+      allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen">
+    </iframe>
 
-  <a-scene
-    id="arScene"
-    mindar-image="imageTargetSrc: ./images/mission3/targets.mind; autoStart: false;"
-    color-space="sRGB"
-    renderer="colorManagement: true, physicallyCorrectLights: true"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
-  >
-    <a-assets>
-      <img id="xrayImage" src="./images/mission3/엑스레이.png" />
-    </a-assets>
-    <a-camera active="false" position="0 0 0"></a-camera>
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-plane 
-        src="#xrayImage" 
-        position="0 0 0" 
-        height="1" 
-        width="1" 
-        rotation="0 0 0" 
-        opacity="0.9">
-      </a-plane>
-    </a-entity>
-  </a-scene>
-  
-  <script src="./lib/aframe.min.js"></script>
-  <script src="./lib/mindar-image-aframe.prod.js"></script>
+    <div class="control-panel">
+        <p>거북이를 비춰 힌트를 찾고, 몸속에 있는 물건의 첫 글자를 입력하세요.</p>
+        <input type="text" id="answer-box" placeholder="정답 입력 후 Enter">
+    </div>
 
-  <script>
-    // 이 코드는 A-Frame 씬이 모든 준비를 마쳤을 때 실행됩니다.
-    document.querySelector("#arScene").addEventListener('loaded', () => {
-      const startButton = document.querySelector("#startButton");
-      const sceneEl = document.querySelector("#arScene");
+    <script>
+        const inputBox = document.getElementById('answer-box');
+        inputBox.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                const answer = inputBox.value.toLowerCase();
+                // 엑스레이 이미지의 힌트는 '병뚜껑' 또는 '빨대'
+                if (answer === 'ㅂ' || answer === 'ㅅ' || answer === 'b' || answer === 's') {
+                    alert('정답! 다음 방으로 이동합니다.');
+                    window.location.href = 'room2.html';
+                } else {
+                    alert('틀렸습니다!');
+                    inputBox.value = '';
+                }
+            }
+        });
+    </script>
 
-      // 버튼 클릭 이벤트 연결
-      startButton.addEventListener('click', () => {
-        // MindAR 시스템을 수동으로 시작시킵니다.
-        const mindarSystem = sceneEl.systems["mindar-image-system"];
-        mindarSystem.start(); // 이 시점에 카메라 권한 팝업을 요청합니다.
-        
-        // 버튼을 숨기고 AR 화면을 보여줍니다.
-        document.querySelector("#startButtonContainer").style.display = 'none';
-        sceneEl.style.display = 'block';
-      });
-    });
-  </script>
 </body>
 </html>
