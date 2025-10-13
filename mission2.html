@@ -5,16 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>문어 스크래치</title>
     <style>
+        /* 구글 폰트 추가 */
+        @import url('https://fonts.googleapis.com/css2?family=Single+Day&display=swap');
+
         /* 기본 스타일 */
         html, body {
             margin: 0;
             padding: 0;
             overflow: hidden; /* 스크롤 방지 */
-            font-family: sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Single Day', cursive; /* 적용된 폰트 */
+            background-color: #f7f7f7;
             display: flex;
             flex-direction: column;
             height: 100vh;
+        }
+
+        /* 텍스트 섹션 스타일 (추가) */
+        #text-section {
+            padding: 30px 20px;
+            text-align: center;
+            font-size: 1.5em; /* 폰트 크기 조정 */
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
         }
 
         /* 에너지바 섹션 스타일 */
@@ -22,6 +35,7 @@
             padding: 20px;
             text-align: center;
             background-color: #fff;
+            border-top: 1px solid #eee; /* 텍스트 섹션과 구분선 */
         }
 
         #progress-bar-container {
@@ -43,6 +57,7 @@
             line-height: 30px;
             color: white;
             font-weight: bold;
+            font-size: 1em;
             transition: width 0.3s ease-in-out; /* 부드러운 전환 효과 */
         }
         
@@ -50,19 +65,22 @@
         #scratch-section {
             position: relative;
             width: 100%;
-            max-width: 1080px; /* 이미지 최대 너비에 맞춤 */
             margin: auto;
             overflow: hidden;
             flex-grow: 1; /* 남은 공간을 모두 차지 */
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: #eaf8ff; /* 이미지 로딩 전 배경색 */
         }
 
         #bg-img {
             display: block;
             width: 100%;
             height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* 이미지가 영역에 맞춰 비율 유지 */
         }
 
         #scratch-canvas {
@@ -75,6 +93,12 @@
 </head>
 <body>
 
+    <div id="text-section">
+        상실감이 큰 문어의 마음을<br>
+        계속 어루만져주면<br>
+        문어의 이야기를 들을 수 있을거야.
+    </div>
+
     <div id="progress-section">
         <div id="progress-bar-container">
             <div id="progress-bar">0%</div>
@@ -82,13 +106,13 @@
     </div>
 
     <div id="scratch-section">
-        <img id="bg-img" src="문어알.png" alt="배경 이미지" />
+        <img id="bg-img" src="images/mission2/문어알.png" alt="배경 이미지" />
         <canvas id="scratch-canvas"></canvas>
     </div>
 
     <script>
         // --- 설정 변수 ---
-        const OVERLAY_IMAGE_SRC = "문어의마음.jpg"; // 긁어낼 앞면 이미지
+        const OVERLAY_IMAGE_SRC = "images/mission2/문어의마음.jpg"; // 긁어낼 앞면 이미지
         const REDIRECT_URL = "room2.html";      // 완료 후 이동할 페이지
         const COMPLETION_THRESHOLD = 96;        // 완료로 간주할 퍼센트 (96%)
 
@@ -109,38 +133,51 @@
         // --- 오버레이 이미지 로딩 ---
         const overlayImg = new Image();
         overlayImg.src = OVERLAY_IMAGE_SRC;
-        // 이미지가 로드된 후에 캔버스 초기화 실행
+        
+        // 이미지가 모두 로드된 후 캔버스 초기화 실행
+        bgImg.onload = initializeCanvas;
         overlayImg.onload = initializeCanvas;
         
         // --- 캔버스 초기화 및 리사이즈 함수 ---
         function initializeCanvas() {
+            // 두 이미지가 모두 로드되지 않았다면 함수 종료
+            if (!bgImg.complete || !overlayImg.complete) {
+                return;
+            }
+
             const container = document.getElementById('scratch-section');
-            const ratio = bgImg.naturalWidth / bgImg.naturalHeight;
-            let newWidth, newHeight;
+            const containerRatio = container.clientWidth / container.clientHeight;
+            const imgRatio = bgImg.naturalWidth / bgImg.naturalHeight;
+            
+            let imgWidth, imgHeight;
 
             // 컨테이너 비율에 맞춰 이미지 크기 계산
-            if (container.clientWidth / container.clientHeight > ratio) {
-                newHeight = container.clientHeight;
-                newWidth = newHeight * ratio;
+            if (containerRatio > imgRatio) {
+                imgHeight = container.clientHeight;
+                imgWidth = imgHeight * imgRatio;
             } else {
-                newWidth = container.clientWidth;
-                newHeight = newWidth / ratio;
+                imgWidth = container.clientWidth;
+                imgHeight = imgWidth / imgRatio;
             }
             
-            bgImg.style.width = `${newWidth}px`;
-            bgImg.style.height = `${newHeight}px`;
-
-            canvas.width = newWidth;
-            canvas.height = newHeight;
+            canvas.width = imgWidth;
+            canvas.height = imgHeight;
             
             // 캔버스 위치 조정 (이미지 중앙 정렬)
-            const topOffset = (container.clientHeight - newHeight) / 2;
-            const leftOffset = (container.clientWidth - newWidth) / 2;
+            const topOffset = (container.clientHeight - imgHeight) / 2;
+            const leftOffset = (container.clientWidth - imgWidth) / 2;
             canvas.style.top = `${topOffset}px`;
             canvas.style.left = `${leftOffset}px`;
+            
+            // 뒷배경 이미지 크기도 캔버스와 동일하게 맞춰줌
+            bgImg.style.width = `${imgWidth}px`;
+            bgImg.style.height = `${imgHeight}px`;
+            bgImg.style.position = 'absolute';
+            bgImg.style.top = `${topOffset}px`;
+            bgImg.style.left = `${leftOffset}px`;
 
             // 스크래치 영역 좌표를 현재 이미지 크기에 맞게 재계산
-            const scaleRatio = newWidth / bgImg.naturalWidth;
+            const scaleRatio = imgWidth / bgImg.naturalWidth;
             scaledRect = {
                 x: Math.floor(scratchRect.x * scaleRatio),
                 y: Math.floor(scratchRect.y * scaleRatio),
@@ -158,17 +195,13 @@
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
 
-            if (event.touches) { // 모바일 터치
-                return {
-                    x: (event.touches[0].clientX - rect.left) * scaleX,
-                    y: (event.touches[0].clientY - rect.top) * scaleY
-                };
-            } else { // PC 마우스
-                return {
-                    x: (event.clientX - rect.left) * scaleX,
-                    y: (event.clientY - rect.top) * scaleY
-                };
-            }
+            const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+            const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
         }
 
         // --- 스크래치 영역 내부인지 확인하는 함수 ---
@@ -195,10 +228,9 @@
             event.preventDefault();
             const { x, y } = getPosition(event);
             
-            // 원을 그려서 긁어내는 효과
             ctx.globalCompositeOperation = 'destination-out';
             ctx.beginPath();
-            ctx.arc(x, y, 20, 0, 2 * Math.PI); // 긁는 원의 반지름 20px
+            ctx.arc(x, y, 25, 0, 2 * Math.PI); // 긁는 원의 반지름 25px
             ctx.fill();
         }
 
@@ -217,25 +249,22 @@
             const pixels = imageData.data;
             let transparentPixels = 0;
 
-            // 알파 채널(투명도) 값을 확인하여 긁힌 픽셀 수 계산
             for (let i = 3; i < pixels.length; i += 4) {
-                if (pixels[i] === 0) {
+                if (pixels[i] < 128) { // 약간의 투명도도 긁힌 것으로 간주
                     transparentPixels++;
                 }
             }
 
             const totalPixels = scaledRect.w * scaledRect.h;
-            let percent = Math.round((transparentPixels / totalPixels) * 100);
+            let percent = totalPixels > 0 ? Math.round((transparentPixels / totalPixels) * 100) : 0;
 
-            // 96% 이상이면 100%로 처리
             if (percent >= COMPLETION_THRESHOLD) {
                 percent = 100;
-                isCompleted = true; // 중복 실행 방지
+                isCompleted = true; 
                 
                 progressBar.style.width = '100%';
                 progressBar.innerText = '100%';
                 
-                // 0.5초 후 다음 페이지로 이동
                 setTimeout(() => {
                     window.location.href = REDIRECT_URL;
                 }, 500);
@@ -247,19 +276,18 @@
         }
 
         // --- 이벤트 리스너 등록 ---
-        // PC 마우스 이벤트
         canvas.addEventListener('mousedown', startScratch);
         canvas.addEventListener('mousemove', scratch);
-        canvas.addEventListener('mouseup', endScratch);
+        document.addEventListener('mouseup', endScratch); // document에 등록하여 캔버스 밖에서 떼도 인식
         canvas.addEventListener('mouseleave', endScratch);
 
-        // 모바일 터치 이벤트
         canvas.addEventListener('touchstart', startScratch, { passive: false });
         canvas.addEventListener('touchmove', scratch, { passive: false });
         canvas.addEventListener('touchend', endScratch);
         
-        // 창 크기가 변경될 때 캔버스 크기 재조정
         window.addEventListener('resize', initializeCanvas);
+        // 페이지 로드 시 초기화
+        window.addEventListener('load', initializeCanvas);
     </script>
 
 </body>
