@@ -24,6 +24,11 @@
       .ib-warning{position:fixed;z-index:20;inset:0;background:rgba(0,0,0,.85);color:#fff;display:none;align-items:center;justify-content:center;text-align:center;padding:24px}
       .ib-warning .box{max-width:520px}
       .ib-warning button{margin-top:12px;padding:10px 14px;border:0;border-radius:10px;font-weight:700}
+      .ib-warning{position:fixed;z-index:20;inset:0;background:rgba(0,0,0,.85);color:#fff;display:none;align-items:center;justify-content:center;text-align:center;padding:24px}
+  .ib-warning .box{max-width:520px}
+  .ib-warning button{margin-top:12px;padding:10px 14px;border:0;border-radius:10px;font-weight:700}
+      /* 디버그 패널 */
+      .diag { position: fixed; left: 12px; top: 12px; z-index: 15; background: rgba(0,0,0,.55); color:#fff; padding:8px 10px; border-radius:10px; font:12px/1.4 ui-sans-serif, system-ui; max-width: 86vw; }
     </style>
   </head>
   <body>
@@ -43,6 +48,7 @@
       <button id="stopBtn">Stop</button>
     </div>
     <div class="hint">타깃이 인식되면 <strong>xray.png</strong>가 나타납니다.</div>
+    <div class="diag" id="diag">diag</div>
 
     <!-- AR 씬 -->
     <a-scene
@@ -103,6 +109,14 @@
         } catch(e){ console.warn('AR start error:', e); }
       }
       sceneEl.addEventListener('renderstart', safeStart);
+      // 재시도 로직(일부 기기에서 첫 시도 실패 대비)
+      let retries = 0;
+      const retryTimer = setInterval(async ()=>{
+        const system = sceneEl.systems['mindar-image-system'];
+        if (system?._active || retries>5) return clearInterval(retryTimer);
+        retries++;
+        await safeStart();
+      }, 1200);
       ['click','touchstart'].forEach(ev => window.addEventListener(ev, safeStart, { once:false }));
       startBtn?.addEventListener('click', safeStart);
       stopBtn?.addEventListener('click', async () => {
@@ -110,10 +124,28 @@
         await system?.stop();
       });
 
-      // 추가 진단: 카메라 접근 가능여부 체크 후 안내
-      (async () => {
-        if (!navigator.mediaDevices?.getUserMedia){
-          console.warn('getUserMedia 미지원 환경');
+      // 추가 진단: 카메라 접근 및 디바이스 나열
+      async function preflight(){
+        const out = [];
+        out.push(`secure:${location.protocol==='https:'} ua:${navigator.userAgent.split(' ').slice(-3).join(' ')}`);
+        try{
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const cams = devices.filter(d=>d.kind==='videoinput');
+          out.push(`cams:${cams.length}`);
+        }catch(e){ out.push('enumerateDevices err'); }
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
+          stream.getTracks().forEach(t=>t.stop());
+          out.push('gum:ok');
+        } catch(e){
+          out.push(`gum:${e.name}`);
+          if (e.name==='NotReadableError') alert('카메라가 다른 앱에서 사용 중일 수 있어요. 모든 카메라 앱을 종료 후 다시 시도해주세요.');
+          if (e.name==='NotAllowedError') alert('카메라 권한이 차단되어 있어요. 사이트 권한에서 카메라를 허용해 주세요.');
+          if (e.name==='NotFoundError') alert('사용 가능한 카메라를 찾지 못했습니다.');
+        }
+        document.getElementById('diag').textContent = out.join(' | ');
+      }
+      preflight();
           return;
         }
         try {
