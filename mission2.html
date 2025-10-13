@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>문어 스크래치</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Single+Day&display=swap');
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      touch-action: none;
+      overflow: hidden;
+      font-family: 'Single Day', cursive;
+      background-color: #fff;
+    }
+
+    #text-section {
+      padding: 40px;
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f7f7f7;
+    }
+
+    #scratch-section {
+      position: relative;
+      width: 100%;
+      max-width: 1080px;
+      margin: auto;
+      overflow: hidden;
+    }
+
+    #bg-img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      touch-action: none;
+    }
+
+    #progress {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 1.47em;
+      z-index: 2;
+    }
+
+    #message {
+      display: none;
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 2em;
+      padding: 40px;
+      background-color: rgba(255,255,255,0.95);
+      color: #333;
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="text-section">
+    상실감이 큰 문어의 마음을<br>
+    계속 어루만져주면<br>
+    문어의 이야기를 들을 수 있을거야.
+  </div>
+
+  <div id="scratch-section">
+    <div id="progress">0%</div>
+        <img id="bg-img" src="images/background.png" />
+    <canvas id="scratch-canvas"></canvas>
+    <div id="message">엄마 문어의 이야기</div>
+  </div>
+
+  <script>
+    // 이 RealWorld 관련 코드는 웹뷰(앱) 환경에서만 동작합니다.
+    // 일반 웹 브라우저나 GitHub Pages에서는 기능하지 않을 수 있습니다.
+    window.RealWorld = {
+      invoke(name, ...params) {
+        const payload = params.length > 1 ? params : params[0];
+        if (window.webkit?.messageHandlers?.[name]) {
+          window.webkit.messageHandlers[name].postMessage(payload);
+        } else if (window.Android?.[name]) {
+          window.Android[name](...params);
+        }
+      },
+      submitAction(input) {
+        window.RealWorld.invoke("submitAction", input);
+      },
+      closePage() {
+        window.RealWorld.invoke("closePage");
+      }
+    };
+
+    const rect = { x: 498, y: 1016, w: 926 - 498, h: 1484 - 1016 };
+    const canvas = document.getElementById("scratch-canvas");
+    const ctx = canvas.getContext("2d");
+    const bgImg = document.getElementById("bg-img");
+    const progress = document.getElementById("progress");
+    const message = document.getElementById("message");
+
+    let revealed = false;
+    let mask = [];
+    let scaled = {};
+
+    const overlayImg = new Image();
+    // ⬇️ 수정된 부분 2: 이미지 경로를 깃허브 저장소 내의 파일 경로로 변경
+    overlayImg.src = "images/overlay.jpg";
+
+    function resizeCanvas() {
+      const ratio = bgImg.clientWidth / bgImg.naturalWidth;
+      canvas.width = bgImg.clientWidth;
+      canvas.height = bgImg.clientHeight;
+
+      scaled = {
+        x: Math.floor(rect.x * ratio),
+        y: Math.floor(rect.y * ratio),
+        w: Math.floor(rect.w * ratio),
+        h: Math.floor(rect.h * ratio)
+      };
+
+      mask = Array.from({ length: scaled.w }, () => new Array(scaled.h).fill(0));
+
+      ctx.globalCompositeOperation = "source-over";
+      if (overlayImg.complete) {
+        ctx.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
+      } else {
+        overlayImg.onload = () => {
+          ctx.drawImage(overlayImg, 0, 0, canvas.width, canvas.height);
+        };
+      }
+    }
+
+    function getTouchPosition(e) {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      return { x: Math.floor(x), y: Math.floor(y) };
+    }
+
+    function isInScratchArea(x, y) {
+      return (
+        x >= scaled.x &&
+        x < scaled.x + scaled.w &&
+        y >= scaled.y &&
+        y < scaled.y + scaled.h
+      );
+    }
+
+    function scratch(x, y) {
+      const radius = 10;
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      const relX = x - scaled.x;
+      const relY = y - scaled.y;
+
+      let changed = false;
+      for (let dx = -radius; dx <= radius; dx++) {
+        for (let dy = -radius; dy <= radius; dy++) {
+          const nx = relX + dx;
+          const ny = relY + dy;
+          if (
+            nx >= 0 &&
+            ny >= 0 &&
+            nx < scaled.w &&
+            ny < scaled.h &&
+            dx * dx + dy * dy <= radius * radius
+          ) {
+            if (mask[nx][ny] === 0) {
+              mask[nx][ny] = 1;
+              changed = true;
+            }
+          }
+        }
+      }
+
+      if (changed) updateProgress();
+    }
+
+    function updateProgress() {
+      if (revealed) return;
+      let scratched = 0;
+      let total = scaled.w * scaled.h;
+      for (let x = 0; x < scaled.w; x++) {
+        for (let y = 0; y < scaled.h; y++) {
+          if (mask[x][y] === 1) scratched++;
+        }
+      }
+
+      const percent = Math.round((scratched / total) * 100);
+      progress.innerText = percent + "%";
+
+      if (percent >= 95) {
+        revealed = true;
+        progress.style.display = "none";
+        message.style.display = "block";
+        window.RealWorld.submitAction("true");
+        setTimeout(() => {
+          window.RealWorld.closePage();
+        }, 500);
+      }
+    }
+
+    canvas.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+    }, { passive: false });
+
+    canvas.addEventListener("touchmove", (e) => {
+      e.preventDefault();
+      const { x, y } = getTouchPosition(e);
+      if (isInScratchArea(x, y)) scratch(x, y);
+    }, { passive: false });
+
+    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("load", resizeCanvas);
+  </script>
+</body>
+</html>
