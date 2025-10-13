@@ -75,3 +75,38 @@ body, html {
     font-size: 20px;
     padding: 10px 15px;
 }
+
+/* 기존 CSS 코드에 이 내용을 추가하거나 수정하세요. */
+
+.controls {
+    display: flex; /* 버튼들을 가로로 정렬합니다. */
+    justify-content: center; /* 버튼들을 가운데로 정렬합니다. */
+    gap: 10px; /* 버튼들 사이의 간격을 설정합니다. */
+    padding: 0 10px; /* 좌우 여백을 줍니다. */
+}
+
+/* 모든 버튼에 적용될 공통 스타일 */
+.controls button {
+    padding: 12px 0; /* 상하 여백을 넉넉하게 줍니다. */
+    flex: 1; /* 모든 버튼이 동일한 너비를 갖도록 합니다. */
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px; /* 모든 버튼의 글자 크기를 16px로 통일합니다. */
+    cursor: pointer;
+    white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 합니다. */
+}
+
+/* 각 버튼의 배경색 설정 */
+#capture-button {
+    background-color: #2E8B57; /* 녹색 계열 */
+}
+
+#switch-camera-button {
+    background-color: #FFA500; /* 주황색 계열 */
+}
+
+#next-mission-button {
+    background-color: #4682B4; /* 파란색 계열 */
+}
