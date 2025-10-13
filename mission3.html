@@ -1,76 +1,84 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>거북이 AR 엑스레이 (최종 수정판)</title>
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <style>
-    body { margin: 0; overflow: hidden; }
-    #startButtonContainer {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #333;
-      z-index: 10000;
-    }
-    #startButton {
-      padding: 20px 40px;
-      font-size: 1.5em;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    a-scene {
-        display: none;
-    }
-  </style>
-</head>
-<body>
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>MindAR: targets.mind → xray.png 오버레이</title>
 
-  <div id="startButtonContainer">
-    <button id="startButton">AR 시작하기</button>
-  </div>
+    <!-- A-Frame & MindAR (Image) -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe@1.5.0/dist/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-  <a-scene
-    id="arScene"
-    mindar-image="imageTargetSrc: ./images/mission3/targets.mind; autoStart: false;"
-    color-space="sRGB"
-    renderer="colorManagement: true, physicallyCorrectLights: true"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
-  >
-    <a-assets>
-      <img id="xrayImage" src="./images/mission3/xray.png" />
-    </a-assets>
-    <a-camera active="false" position="0 0 0"></a-camera>
-    <a-entity mindar-image-target="targetIndex: 0">
-      <a-plane src="#xrayImage" position="0 0 0.001" height="1" width="1" rotation="0 0 0" opacity="0.9"></a-plane>
-    </a-entity>
-  </a-scene>
+    <style>
+      html, body { margin: 0; height: 100%; overflow: hidden; background: #000; }
+      .btns { position: fixed; z-index: 10; left: 12px; bottom: 12px; display: flex; gap: 8px; }
+      .btns button { padding: 8px 12px; border-radius: 8px; border: 0; font-weight: 600; }
+      .hint { position: fixed; z-index: 10; right: 12px; bottom: 12px; color: #fff; font: 14px/1.3 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif; opacity: .8; text-align: right; }
+      .hint a { color: #fff; text-decoration: underline; }
+    </style>
+  </head>
+  <body>
+    <!-- 간단한 컨트롤(선택 사항) -->
+    <div class="btns">
+      <button id="startBtn">Start</button>
+      <button id="stopBtn">Stop</button>
+    </div>
+    <div class="hint">카메라를 <strong>images/mission3/targets.mind</strong>에 등록된 이미지로 향하면<br>오버레이된 <strong>xray.png</strong>가 나타납니다.</div>
 
-  <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  
-  <script>
-    // DOMContentLoaded 이벤트는 HTML 문서가 완전히 로드되고 파싱되었을 때 발생하여 안정성을 높입니다.
-    document.addEventListener('DOMContentLoaded', () => {
-      const startButton = document.querySelector("#startButton");
-      const sceneEl = document.querySelector("#arScene");
-      
-      // AR 시스템이 실제로 준비되었을 때만 버튼 클릭 이벤트를 활성화합니다.
-      sceneEl.addEventListener('ready', () => {
-        startButton.addEventListener('click', () => {
-          const mindarSystem = sceneEl.systems["mindar-image-system"];
-          mindarSystem.start(); // AR 시작 및 카메라 요청
-          document.querySelector("#startButtonContainer").style.display = 'none';
-          sceneEl.style.display = 'block';
-        });
+    <!-- AR 씬 -->
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      renderer="colorManagement: true; physicallyCorrectLights: true"
+      device-orientation-permission-ui="enabled: true"
+      mindar-image="imageTargetSrc: images/mission3/targets.mind">
+
+      <!-- 에셋 프리로드 -->
+      <a-assets>
+        <!-- 오버레이 이미지 -->
+        <img id="xray" src="images/mission3/xray.png" crossorigin="anonymous" />
+      </a-assets>
+
+      <!-- 카메라 (MindAR가 제공하는 카메라 사용) -->
+      <a-camera position="0 0 0" look-controls-enabled="false"></a-camera>
+
+      <!-- 타깃(첫 번째 인덱스) 위에 xray.png 오버레이 -->
+      <a-entity mindar-image-target="targetIndex: 0">
+        <!-- width/height는 타깃의 실제 크기 비율에 맞게 조정 (미터 단위). 필요 시 회전/위치 보정 -->
+        <a-image src="#xray" width="1" height="1" position="0 0 0" rotation="0 0 0" transparent="true"></a-image>
+      </a-entity>
+
+      <!-- 조명(선택 사항) -->
+      <a-entity light="type: ambient; intensity: 1.0"></a-entity>
+    </a-scene>
+
+    <script>
+      // Start/Stop 컨트롤 (선택 사항)
+      const sceneEl = document.querySelector('a-scene');
+      const startBtn = document.getElementById('startBtn');
+      const stopBtn = document.getElementById('stopBtn');
+
+      startBtn?.addEventListener('click', async () => {
+        const system = sceneEl?.systems['mindar-image-system'];
+        await system?.start();
       });
-    });
-  </script>
-</body>
+
+      stopBtn?.addEventListener('click', async () => {
+        const system = sceneEl?.systems['mindar-image-system'];
+        await system?.stop();
+      });
+
+      // iOS 13+ 권한 요청 대응: 사용자가 상호작용 시 시작
+      window.addEventListener('click', async () => {
+        try {
+          const system = sceneEl?.systems['mindar-image-system'];
+          if (system && system.video && system.video.readyState < 2) {
+            await system.start();
+          }
+        } catch (e) {
+          // noop
+        }
+      }, { once: true });
+    </script>
+  </body>
 </html>
