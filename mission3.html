@@ -11,21 +11,38 @@
 
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; background: #000; }
+      /* 버튼 & 힌트 */
       .btns { position: fixed; z-index: 10; left: 12px; bottom: 12px; display: flex; gap: 8px; }
       .btns button { padding: 8px 12px; border-radius: 10px; border: 0; font-weight: 700; }
-      .hint { position: fixed; z-index: 10; right: 12px; bottom: 12px; color: #fff; font: 14px/1.3 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif; opacity: .8; text-align: right; }
+      .hint { position: fixed; z-index: 10; right: 12px; bottom: 12px; color: #fff; font: 14px/1.3 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif; opacity: .85; text-align: right; }
       .hint a { color: #fff; text-decoration: underline; }
       /* MindAR 스캐닝 UI가 버튼을 가리지 않도록 */
       .mindar-ui-overlay { bottom: 64px !important; }
+      /* 혹시라도 자산 이미지가 DOM에 보이지 않도록 강제 숨김 */
+      a-assets, a-assets > * { display: none !important; }
+      /* 인앱 브라우저 경고 배경 */
+      .ib-warning{position:fixed;z-index:20;inset:0;background:rgba(0,0,0,.85);color:#fff;display:none;align-items:center;justify-content:center;text-align:center;padding:24px}
+      .ib-warning .box{max-width:520px}
+      .ib-warning button{margin-top:12px;padding:10px 14px;border:0;border-radius:10px;font-weight:700}
     </style>
   </head>
   <body>
-    <!-- 간단한 컨트롤(선택 사항) -->
+    <!-- 인앱 브라우저(카카오톡 등) 안내 -->
+    <div id="ibWarning" class="ib-warning">
+      <div class="box">
+        <h3 style="margin:0 0 8px">카메라가 실행되지 않나요?</h3>
+        <p style="opacity:.9">카카오톡/인스타그램 등 <b>인앱 브라우저</b>에서는 카메라가 차단될 수 있어요.<br>오른쪽 상단 메뉴에서 <b>기본 브라우저로 열기</b>를 선택하거나 아래 버튼을 눌러주세요.</p>
+        <button id="openExternal">외부 브라우저에서 열기</button>
+        <p style="margin-top:10px;opacity:.8">또는 아래 <b>Start</b> 버튼을 눌러 카메라 권한을 허용해 주세요.</p>
+      </div>
+    </div>
+
+    <!-- 컨트롤(선택) -->
     <div class="btns">
       <button id="startBtn">Start</button>
       <button id="stopBtn">Stop</button>
     </div>
-    <div class="hint">타깃을 인식하면만 <strong>xray.png</strong>가 나타납니다.</div>
+    <div class="hint">타깃이 인식되면 <strong>xray.png</strong>가 나타납니다.</div>
 
     <!-- AR 씬 -->
     <a-scene
@@ -45,9 +62,8 @@
 
       <!-- 타깃(0번) 위에 xray.png 오버레이: 기본은 숨김 상태 -->
       <a-entity id="anchor" mindar-image-target="targetIndex: 0" visible="false">
-        <!-- 크기/비율은 필요에 맞게 조정 (단위: m). 너무 크면 width/height 낮추세요. -->
         <a-image src="#xray"
-                 width="0.6" height="0.6"
+                 width="0.35" height="0.35"
                  position="0 0 0"
                  rotation="0 0 0"
                  material="transparent: true; alphaTest: 0.001">
@@ -63,36 +79,56 @@
       const startBtn = document.getElementById('startBtn');
       const stopBtn = document.getElementById('stopBtn');
       const anchor = document.getElementById('anchor');
+      const ibWarning = document.getElementById('ibWarning');
+      const openExternalBtn = document.getElementById('openExternal');
 
-      // MindAR 이벤트로 표시/비표시 제어 (카메라 미동작 시 초기 플래시 방지)
-      anchor.addEventListener('targetFound', () => { anchor.setAttribute('visible', 'true'); });
-      anchor.addEventListener('targetLost',  () => { anchor.setAttribute('visible', 'false'); });
+      // 인앱 브라우저 감지 (카카오/인스타/페북/네이버 등)
+      const ua = navigator.userAgent || navigator.vendor || window.opera;
+      const isInApp = /(KAKAOTALK|FBAN|FBAV|Instagram|NAVER|DaumApps)/i.test(ua);
+      if (isInApp) ibWarning.style.display = 'flex';
+      openExternalBtn?.addEventListener('click', () => {
+        const url = location.href;
+        location.href = `intent://${url.replace(/^https?:\/\//,'')}#Intent;scheme=https;package=com.android.chrome;end`;
+      });
 
-      // 페이지 진입 시 자동 시작 (HTTPS 필요). iOS는 사용자 제스처 후 시작될 수 있음.
-      sceneEl.addEventListener('renderstart', async () => {
+      // MindAR: 타깃 인식 시에만 보이기
+      anchor.addEventListener('targetFound', () => anchor.setAttribute('visible', 'true'));
+      anchor.addEventListener('targetLost', () => anchor.setAttribute('visible', 'false'));
+
+      // 안전 시작 (여러 경로로 시도)
+      async function safeStart(){
         try {
           const system = sceneEl.systems['mindar-image-system'];
           if (system && !system._active) await system.start();
-        } catch (e) { /* noop */ }
-      });
-
-      // 수동 Start/Stop (선택 사항)
-      startBtn?.addEventListener('click', async () => {
-        const system = sceneEl.systems['mindar-image-system'];
-        await system?.start();
-      });
+        } catch(e){ console.warn('AR start error:', e); }
+      }
+      sceneEl.addEventListener('renderstart', safeStart);
+      ['click','touchstart'].forEach(ev => window.addEventListener(ev, safeStart, { once:false }));
+      startBtn?.addEventListener('click', safeStart);
       stopBtn?.addEventListener('click', async () => {
         const system = sceneEl.systems['mindar-image-system'];
         await system?.stop();
       });
 
-      // iOS 권한: 첫 사용자 클릭 시 시작 (사파리 자동재생 제한 대응)
-      window.addEventListener('click', async () => {
+      // 추가 진단: 카메라 접근 가능여부 체크 후 안내
+      (async () => {
+        if (!navigator.mediaDevices?.getUserMedia){
+          console.warn('getUserMedia 미지원 환경');
+          return;
+        }
         try {
-          const system = sceneEl.systems['mindar-image-system'];
-          if (system && !system._active) await system.start();
-        } catch (e) {}
-      }, { once: true });
+          // 권한 프롬프트 유발
+          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false });
+          stream.getTracks().forEach(t => t.stop());
+        } catch (e) {
+          alert('카메라 권한이 차단되어 있습니다. 사이트 권한에서 카메라를 허용해 주세요.');
+          console.error('권한 거부 또는 오류:', e);
+        }
+      })();
+
+      // 콘솔 로그(문제 진단용)
+      sceneEl.addEventListener('arError', (e) => console.error('MindAR arError:', e?.detail));
+      sceneEl.addEventListener('arReady', () => console.log('MindAR ready'));
     </script>
   </body>
 </html>
