@@ -1,155 +1,74 @@
-<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>MindAR: targets.mind → xray.png 오버레이 (Safe Minimal)</title>
-
-    <!-- 기본 스타일 -->
-    <style>
-      html, body { margin: 0; height: 100%; overflow: hidden; background: #000; }
-      .btns { position: fixed; z-index: 1001; left: 12px; bottom: 12px; display: flex; gap: 8px; }
-      .btns button { padding: 8px 12px; border-radius: 10px; border: 0; font-weight: 700; }
-      .hint { position: fixed; z-index: 1001; right: 12px; bottom: 12px; color: #fff; font: 14px/1.3 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif; opacity: .9; text-align: right; }
-      .mindar-ui-overlay { bottom: 64px !important; }
-      a-assets, a-assets > * { display: none !important; }
-      /* 진단 패널(항상 최상단) */
-      #diag { position: fixed; left: 10px; top: 10px; z-index: 9999; background: rgba(0,0,0,.7); color:#fff; padding:10px 12px; border-radius:12px; font: 13px/1.4 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif; max-width: 90vw; word-break: break-word; }
-      #diag b { color: #fff; }
-      .ib-warning{position:fixed;z-index:1002;inset:0;background:rgba(0,0,0,.85);color:#fff;display:none;align-items:center;justify-content:center;text-align:center;padding:24px}
-      .ib-warning .box{max-width:520px}
-      .ib-warning button{margin-top:12px;padding:10px 14px;border:0;border-radius:10px;font-weight:700}
-    </style>
-    <noscript>
-      <div style="position:fixed;inset:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font:16px system-ui">자바스크립트를 켜주세요.</div>
-    </noscript>
-  </head>
-
-<script>
-(async () => {
-  const diagEl = document.getElementById('diag');
-  function log(msg){ diagEl.textContent = (diagEl.textContent ? diagEl.textContent + ' | ' : '') + msg; }
-
-  const src = 'images/mission3/targets.mind?v=' + Date.now();
-  try {
-    const res = await fetch(src, { method: 'HEAD', cache: 'no-store' });
-    log('targets:' + res.status);
-  } catch(e){
-    log('targets:fetch-fail');
-  }
-
-  const scene = document.getElementById('scene');
-  const sys = () => scene?.systems?.['mindar-image-system'];
-  setTimeout(() => {
-    log('active:' + !!sys()?._active);
-  }, 1500);
-})();
-</script>
-
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AR 웹앱 (경로 수정)</title>
   
-  <body>
-    <div id="diag">로딩 중…</div>
+  <style>
+    body { margin: 0; overflow: hidden; }
+    #startButtonContainer {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      display: flex; justify-content: center; align-items: center;
+      background-color: #333; z-index: 10;
+    }
+    #startButton {
+      padding: 20px 40px; font-size: 1.5em; background-color: #4CAF50;
+      color: white; border: none; border-radius: 10px; cursor: pointer;
+    }
+    a-scene {
+      display: none; /* 시작 전에는 AR 씬 숨기기 */
+    }
+  </style>
+</head>
+<body>
 
-    <!-- 인앱 브라우저(카톡 등) 안내 -->
-    <div id="ibWarning" class="ib-warning">
-      <div class="box">
-        <h3 style="margin:0 0 8px">카메라가 실행되지 않나요?</h3>
-        <p style="opacity:.9">카카오톡/인스타그램 등 <b>인앱 브라우저</b>에서는 카메라가 차단될 수 있어요.<br>오른쪽 상단 메뉴에서 <b>기본 브라우저로 열기</b>를 선택하거나 아래 버튼을 눌러주세요.</p>
-        <button id="openExternal">외부 브라우저에서 열기</button>
-        <p style="margin-top:10px;opacity:.8">또는 아래 <b>Start</b> 버튼을 눌러 카메라 권한을 허용해 주세요.</p>
-      </div>
-    </div>
+  <div id="startButtonContainer">
+    <button id="startButton">AR 시작하기</button>
+  </div>
 
-    <div class="btns">
-      <button id="startBtn">Start</button>
-      <button id="stopBtn">Stop</button>
-    </div>
-    <div class="hint">타깃이 인식되면 <strong>xray.png</strong>가 나타납니다.</div>
+  <a-scene
+    id="arScene"
+    mindar-image="imageTargetSrc: ./images/mission3/targets.mind; autoStart: false;"
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights: true"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+  >
+    <a-assets>
+      <img id="xrayImage" src="./images/mission3/엑스레이.png" />
+    </a-assets>
 
-    <!-- AR 씬 -->
-    <a-scene id="scene"
-      vr-mode-ui="enabled: false"
-      embedded
-      renderer="colorManagement: true; physicallyCorrectLights: true"
-      device-orientation-permission-ui="enabled: true"
-      mindar-image="imageTargetSrc: images/mission3/targets.mind; autoStart: true; uiLoading: true; uiScanning: true; uiError: true;">
+    <a-camera active="false" position="0 0 0"></a-camera>
+    
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-plane 
+        src="#xrayImage" 
+        position="0 0 0" 
+        height="1" 
+        width="1" 
+        rotation="0 0 0" 
+        opacity="0.9">
+      </a-plane>
+    </a-entity>
+  </a-scene>
+  
+  <script src="./lib/aframe.min.js"></script>
+  <script src="./lib/mindar-image-aframe.prod.js"></script>
 
-      <a-assets>
-        <img id="xray" src="images/mission3/xray.png" crossorigin="anonymous" />
-      </a-assets>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const startButton = document.querySelector("#startButton");
+      const sceneEl = document.querySelector("#arScene");
 
-      <a-camera position="0 0 0" look-controls-enabled="false"></a-camera>
-
-      <a-entity id="anchor" mindar-image-target="targetIndex: 0" visible="false">
-        <a-image src="#xray" width="0.35" height="0.35" position="0 0 0" rotation="0 0 0" material="transparent: true; alphaTest: 0.001"></a-image>
-      </a-entity>
-
-      <a-entity light="type: ambient; intensity: 1.0"></a-entity>
-    </a-scene>
-
-    <!-- 로컬 라이브러리 사용 (CDN 차단 회피) -->
-    <script src="lib/aframe.min.js"></script>
-    <script src="lib/mindar-image-aframe.prod.js"></script>
-
-    <script>
-      const sceneEl = document.getElementById('scene');
-      const startBtn = document.getElementById('startBtn');
-      const stopBtn = document.getElementById('stopBtn');
-      const anchor = document.getElementById('anchor');
-      const ibWarning = document.getElementById('ibWarning');
-      const openExternalBtn = document.getElementById('openExternal');
-      const diag = document.getElementById('diag');
-
-      function logDiag(msg){ diag.textContent = msg; }
-
-      // 인앱 브라우저 감지
-      const ua = navigator.userAgent || navigator.vendor || window.opera;
-      const isInApp = /(KAKAOTALK|FBAN|FBAV|Instagram|NAVER|DaumApps)/i.test(ua);
-      if (isInApp) ibWarning.style.display = 'flex';
-      openExternalBtn?.addEventListener('click', () => {
-        const url = location.href; location.href = `intent://${url.replace(/^https?:\/\//,'')}#Intent;scheme=https;package=com.android.chrome;end`;
+      startButton.addEventListener('click', () => {
+        const mindarSystem = sceneEl.systems["mindar-image-system"];
+        mindarSystem.start(); // AR 시작 및 카메라 권한 요청
+        
+        document.querySelector("#startButtonContainer").style.display = 'none';
+        sceneEl.style.display = 'block';
       });
-
-      // 타깃 인식 시에만 보이기
-      anchor.addEventListener('targetFound', () => anchor.setAttribute('visible', 'true'));
-      anchor.addEventListener('targetLost', () => anchor.setAttribute('visible', 'false'));
-
-      // 안전 시작
-      async function safeStart(){
-        try {
-          const system = sceneEl.systems['mindar-image-system'];
-          if (system && !system._active) await system.start();
-        } catch(e){ console.warn('AR start error:', e); logDiag('start error: '+e.name); }
-      }
-      sceneEl.addEventListener('renderstart', safeStart);
-      ['click','touchstart'].forEach(ev => window.addEventListener(ev, safeStart, { once:false }));
-
-      // 재시도 6회
-      let retries = 0; const retryTimer = setInterval(async ()=>{
-        const system = sceneEl.systems['mindar-image-system'];
-        if (system?._active || retries>5){ clearInterval(retryTimer); return; }
-        retries++; await safeStart();
-      }, 1200);
-
-      // 프리플라이트 & 진단
-      (async () => {
-        const secure = location.protocol === 'https:'; let cams = 'n/a';
-        try{ const devices = await navigator.mediaDevices?.enumerateDevices(); cams = (devices||[]).filter(d=>d.kind==='videoinput').length; }catch{}
-        logDiag(`secure:${secure} | cams:${cams} | ua:${navigator.userAgent.split(' ').slice(-3).join(' ')}`);
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
-          stream.getTracks().forEach(t=>t.stop());
-          logDiag(diag.textContent + ' | gum:ok');
-        } catch(e){
-          logDiag(diag.textContent + ' | gum:'+e.name);
-          if (e.name==='NotReadableError') alert('카메라가 다른 앱에서 사용 중일 수 있어요. 카메라/영상통화 앱을 모두 종료 후 다시 시도하세요.');
-          if (e.name==='NotAllowedError') alert('카메라 권한이 차단되어 있어요. 사이트 권한에서 카메라를 허용해 주세요.');
-          if (e.name==='NotFoundError') alert('사용 가능한 카메라를 찾지 못했습니다.');
-        }
-      })();
-
-      sceneEl.addEventListener('arError', (e) => { console.error('MindAR arError:', e?.detail); logDiag('arError'); });
-      sceneEl.addEventListener('arReady', () => { console.log('MindAR ready'); logDiag(diag.textContent + ' | arReady'); });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
