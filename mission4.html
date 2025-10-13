@@ -13,8 +13,8 @@
         /* 전체 페이지 스타일 */
         body {
             font-family: 'Gaegu', cursive;
-            background-color: #1a1a2e; /* 어두운 남색 배경 */
-            color: #e0e0e0; /* 밝은 회색 텍스트 */
+            background-color: skyblue; /* 배경색을 skyblue로 수정 */
+            color: #1E272E; /* 텍스트 색상을 어두운 색으로 변경하여 가독성 확보 */
             margin: 0;
             padding: 20px;
             display: flex;
@@ -31,7 +31,7 @@
 
         /* 텍스트 스타일 */
         p {
-            font-size: 2em;
+            font-size: 1em;
             font-weight: 700;
             line-height: 1.6;
             margin-bottom: 40px;
@@ -44,7 +44,7 @@
             align-items: center;
             gap: 30px;
             flex-wrap: wrap;
-            margin-bottom: 40px; /* 입력창과의 간격 추가 */
+            margin-bottom: 40px;
         }
 
         /* 이미지 스타일 */
@@ -53,26 +53,26 @@
             width: 300px;
             height: auto;
             border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 색상 연하게 조정 */
         }
 
         /* 텍스트 입력창 스타일 */
         #input-box {
-            font-family: 'Gaegu', cursive; /* 폰트 적용 */
+            font-family: 'Gaegu', cursive;
             font-size: 1.5em;
             padding: 10px 15px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid #333; /* 테두리 색상 변경 */
             border-radius: 10px;
-            background-color: #2c2c54;
-            color: #e0e0e0;
+            background-color: #f0f8ff; /* 연한 하늘색 배경 */
+            color: #1E272E; /* 텍스트 색상 변경 */
             text-align: center;
             width: 80%;
-            max-width: 300px; /* 최대 너비 설정 */
+            max-width: 300px;
         }
 
         /* 입력창 placeholder 텍스트 스타일 */
         #input-box::placeholder {
-            color: #888;
+            color: #555;
         }
     </style>
 </head>
@@ -82,27 +82,19 @@
         <p>모든 곳이 똑같이 느껴져. 나는 방향감각을 잃어버렸어. 내가 있는 곳이 어딘지 찾아줘.</p>
 
         <div class="image-gallery">
-            <img src="images/mission4/map1.png" alt="현재 위치를 보여주는 지도">
-            <img src="images/mission4/map2.png" alt="전체 미로 지도">
+            <img src="map1.png" alt="현재 위치를 보여주는 지도">
+            <img src="map2.png" alt="전체 미로 지도">
         </div>
 
         <input type="text" id="input-box" placeholder="알파벳을 입력하세요">
     </div>
 
     <script>
-        // id가 'input-box'인 HTML 요소를 찾아서 변수에 저장합니다.
         const inputBox = document.getElementById('input-box');
 
-        // 입력창에서 키보드를 눌렀다가 뗄 때마다 특정 함수를 실행하도록 설정합니다.
         inputBox.addEventListener('keyup', function(event) {
-            
-            // 만약 누른 키가 'Enter' 키라면, 아래 코드를 실행합니다.
             if (event.key === 'Enter') {
-                
-                // 입력된 값을 소문자로 변환하여 'e'와 같은지 비교합니다.
                 if (inputBox.value.toLowerCase() === 'e') {
-                    
-                    // 조건이 맞으면 'room2.html' 페이지로 이동합니다.
                     window.location.href = 'room2.html';
                 }
             }
