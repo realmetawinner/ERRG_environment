@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AR 웹앱 (경로 수정)</title>
+  <title>AR 웹앱 (최종 안정화 버전)</title>
   
   <style>
     body { margin: 0; overflow: hidden; }
@@ -38,9 +38,7 @@
     <a-assets>
       <img id="xrayImage" src="./images/mission3/엑스레이.png" />
     </a-assets>
-
     <a-camera active="false" position="0 0 0"></a-camera>
-    
     <a-entity mindar-image-target="targetIndex: 0">
       <a-plane 
         src="#xrayImage" 
@@ -57,14 +55,18 @@
   <script src="./lib/mindar-image-aframe.prod.js"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    // 이 코드는 A-Frame 씬이 모든 준비를 마쳤을 때 실행됩니다.
+    document.querySelector("#arScene").addEventListener('loaded', () => {
       const startButton = document.querySelector("#startButton");
       const sceneEl = document.querySelector("#arScene");
 
+      // 버튼 클릭 이벤트 연결
       startButton.addEventListener('click', () => {
+        // MindAR 시스템을 수동으로 시작시킵니다.
         const mindarSystem = sceneEl.systems["mindar-image-system"];
-        mindarSystem.start(); // AR 시작 및 카메라 권한 요청
+        mindarSystem.start(); // 이 시점에 카메라 권한 팝업을 요청합니다.
         
+        // 버튼을 숨기고 AR 화면을 보여줍니다.
         document.querySelector("#startButtonContainer").style.display = 'none';
         sceneEl.style.display = 'block';
       });
