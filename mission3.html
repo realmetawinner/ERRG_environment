@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>거북이 AR 엑스레이 (시작 버튼 버전)</title>
+  <title>거북이 AR 엑스레이 (최종 수정판)</title>
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
   <style>
     body { margin: 0; overflow: hidden; }
@@ -19,13 +19,12 @@
     #startButton {
       padding: 20px 40px;
       font-size: 1.5em;
-      background-color: #4CAF50; /* 초록색 버튼 */
+      background-color: #4CAF50;
       color: white;
       border: none;
       border-radius: 10px;
       cursor: pointer;
     }
-    /* AR 씬을 처음에는 보이지 않게 처리 */
     a-scene {
         display: none;
     }
@@ -57,18 +56,19 @@
   <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   
   <script>
+    // DOMContentLoaded 이벤트는 HTML 문서가 완전히 로드되고 파싱되었을 때 발생하여 안정성을 높입니다.
     document.addEventListener('DOMContentLoaded', () => {
       const startButton = document.querySelector("#startButton");
       const sceneEl = document.querySelector("#arScene");
-
-      startButton.addEventListener('click', () => {
-        // MindAR 시스템을 수동으로 시작시킵니다.
-        const mindarSystem = sceneEl.systems["mindar-image-system"];
-        mindarSystem.start(); // 바로 이 시점에 카메라 권한 팝업을 요청합니다.
-
-        // 버튼을 숨기고 AR 화면을 보여줍니다.
-        document.querySelector("#startButtonContainer").style.display = 'none';
-        sceneEl.style.display = 'block';
+      
+      // AR 시스템이 실제로 준비되었을 때만 버튼 클릭 이벤트를 활성화합니다.
+      sceneEl.addEventListener('ready', () => {
+        startButton.addEventListener('click', () => {
+          const mindarSystem = sceneEl.systems["mindar-image-system"];
+          mindarSystem.start(); // AR 시작 및 카메라 요청
+          document.querySelector("#startButtonContainer").style.display = 'none';
+          sceneEl.style.display = 'block';
+        });
       });
     });
   </script>
