@@ -13,8 +13,8 @@
         /* 전체 페이지 스타일 */
         body {
             font-family: 'Gaegu', cursive;
-            background-color: skyblue; /* 배경색을 skyblue로 수정 */
-            color: #1E272E; /* 텍스트 색상을 어두운 색으로 변경하여 가독성 확보 */
+            background-color: skyblue;
+            color: #1E272E;
             margin: 0;
             padding: 20px;
             display: flex;
@@ -33,7 +33,8 @@
         p {
             font-size: 1em;
             font-weight: 700;
-            line-height: 1.6;
+            /* 👇 줄 간격을 기존의 절반 수준으로 수정 */
+            line-height: 1; 
             margin-bottom: 40px;
         }
 
@@ -53,7 +54,7 @@
             width: 300px;
             height: auto;
             border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 그림자 색상 연하게 조정 */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
         /* 텍스트 입력창 스타일 */
@@ -61,10 +62,10 @@
             font-family: 'Gaegu', cursive;
             font-size: 1.5em;
             padding: 10px 15px;
-            border: 2px solid #333; /* 테두리 색상 변경 */
+            border: 2px solid #333;
             border-radius: 10px;
-            background-color: #f0f8ff; /* 연한 하늘색 배경 */
-            color: #1E272E; /* 텍스트 색상 변경 */
+            background-color: #f0f8ff;
+            color: #1E272E;
             text-align: center;
             width: 80%;
             max-width: 300px;
@@ -79,9 +80,7 @@
 <body>
 
     <div class="container">
-        <p>모든 곳이 똑같이 느껴져.</p>
-        <p>나는 방향감각을 잃어버렸어.</p> 
-        <p>내가 있는 곳이 어딘지 찾아줘.</p>
+        <p>모든 곳이 똑같이 느껴져.<br>나는 방향감각을 잃어버렸어.<br>내가 있는 곳이 어딘지 찾아줘.</p>
 
         <div class="image-gallery">
             <img src="images/mission4/map1.png" alt="현재 위치를 보여주는 지도">
