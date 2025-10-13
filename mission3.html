@@ -12,9 +12,11 @@
     <style>
       html, body { margin: 0; height: 100%; overflow: hidden; background: #000; }
       .btns { position: fixed; z-index: 10; left: 12px; bottom: 12px; display: flex; gap: 8px; }
-      .btns button { padding: 8px 12px; border-radius: 8px; border: 0; font-weight: 600; }
+      .btns button { padding: 8px 12px; border-radius: 10px; border: 0; font-weight: 700; }
       .hint { position: fixed; z-index: 10; right: 12px; bottom: 12px; color: #fff; font: 14px/1.3 system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, sans-serif; opacity: .8; text-align: right; }
       .hint a { color: #fff; text-decoration: underline; }
+      /* MindAR 스캐닝 UI가 버튼을 가리지 않도록 */
+      .mindar-ui-overlay { bottom: 64px !important; }
     </style>
   </head>
   <body>
@@ -23,7 +25,7 @@
       <button id="startBtn">Start</button>
       <button id="stopBtn">Stop</button>
     </div>
-    <div class="hint">카메라를 <strong>images/mission3/targets.mind</strong>에 등록된 이미지로 향하면<br>오버레이된 <strong>xray.png</strong>가 나타납니다.</div>
+    <div class="hint">타깃을 인식하면만 <strong>xray.png</strong>가 나타납니다.</div>
 
     <!-- AR 씬 -->
     <a-scene
@@ -31,21 +33,25 @@
       embedded
       renderer="colorManagement: true; physicallyCorrectLights: true"
       device-orientation-permission-ui="enabled: true"
-      mindar-image="imageTargetSrc: images/mission3/targets.mind">
+      mindar-image="imageTargetSrc: images/mission3/targets.mind; autoStart: true; uiLoading: true; uiScanning: true; uiError: true;">
 
       <!-- 에셋 프리로드 -->
       <a-assets>
-        <!-- 오버레이 이미지 -->
         <img id="xray" src="images/mission3/xray.png" crossorigin="anonymous" />
       </a-assets>
 
-      <!-- 카메라 (MindAR가 제공하는 카메라 사용) -->
+      <!-- 카메라 -->
       <a-camera position="0 0 0" look-controls-enabled="false"></a-camera>
 
-      <!-- 타깃(첫 번째 인덱스) 위에 xray.png 오버레이 -->
-      <a-entity mindar-image-target="targetIndex: 0">
-        <!-- width/height는 타깃의 실제 크기 비율에 맞게 조정 (미터 단위). 필요 시 회전/위치 보정 -->
-        <a-image src="#xray" width="1" height="1" position="0 0 0" rotation="0 0 0" transparent="true"></a-image>
+      <!-- 타깃(0번) 위에 xray.png 오버레이: 기본은 숨김 상태 -->
+      <a-entity id="anchor" mindar-image-target="targetIndex: 0" visible="false">
+        <!-- 크기/비율은 필요에 맞게 조정 (단위: m). 너무 크면 width/height 낮추세요. -->
+        <a-image src="#xray"
+                 width="0.6" height="0.6"
+                 position="0 0 0"
+                 rotation="0 0 0"
+                 material="transparent: true; alphaTest: 0.001">
+        </a-image>
       </a-entity>
 
       <!-- 조명(선택 사항) -->
@@ -53,31 +59,39 @@
     </a-scene>
 
     <script>
-      // Start/Stop 컨트롤 (선택 사항)
       const sceneEl = document.querySelector('a-scene');
       const startBtn = document.getElementById('startBtn');
       const stopBtn = document.getElementById('stopBtn');
+      const anchor = document.getElementById('anchor');
 
-      startBtn?.addEventListener('click', async () => {
-        const system = sceneEl?.systems['mindar-image-system'];
-        await system?.start();
+      // MindAR 이벤트로 표시/비표시 제어 (카메라 미동작 시 초기 플래시 방지)
+      anchor.addEventListener('targetFound', () => { anchor.setAttribute('visible', 'true'); });
+      anchor.addEventListener('targetLost',  () => { anchor.setAttribute('visible', 'false'); });
+
+      // 페이지 진입 시 자동 시작 (HTTPS 필요). iOS는 사용자 제스처 후 시작될 수 있음.
+      sceneEl.addEventListener('renderstart', async () => {
+        try {
+          const system = sceneEl.systems['mindar-image-system'];
+          if (system && !system._active) await system.start();
+        } catch (e) { /* noop */ }
       });
 
+      // 수동 Start/Stop (선택 사항)
+      startBtn?.addEventListener('click', async () => {
+        const system = sceneEl.systems['mindar-image-system'];
+        await system?.start();
+      });
       stopBtn?.addEventListener('click', async () => {
-        const system = sceneEl?.systems['mindar-image-system'];
+        const system = sceneEl.systems['mindar-image-system'];
         await system?.stop();
       });
 
-      // iOS 13+ 권한 요청 대응: 사용자가 상호작용 시 시작
+      // iOS 권한: 첫 사용자 클릭 시 시작 (사파리 자동재생 제한 대응)
       window.addEventListener('click', async () => {
         try {
-          const system = sceneEl?.systems['mindar-image-system'];
-          if (system && system.video && system.video.readyState < 2) {
-            await system.start();
-          }
-        } catch (e) {
-          // noop
-        }
+          const system = sceneEl.systems['mindar-image-system'];
+          if (system && !system._active) await system.start();
+        } catch (e) {}
       }, { once: true });
     </script>
   </body>
