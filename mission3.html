@@ -24,6 +24,29 @@
       <div style="position:fixed;inset:0;background:#000;color:#fff;display:flex;align-items:center;justify-content:center;font:16px system-ui">자바스크립트를 켜주세요.</div>
     </noscript>
   </head>
+
+<script>
+(async () => {
+  const diagEl = document.getElementById('diag');
+  function log(msg){ diagEl.textContent = (diagEl.textContent ? diagEl.textContent + ' | ' : '') + msg; }
+
+  const src = 'images/mission3/targets.mind?v=' + Date.now();
+  try {
+    const res = await fetch(src, { method: 'HEAD', cache: 'no-store' });
+    log('targets:' + res.status);
+  } catch(e){
+    log('targets:fetch-fail');
+  }
+
+  const scene = document.getElementById('scene');
+  const sys = () => scene?.systems?.['mindar-image-system'];
+  setTimeout(() => {
+    log('active:' + !!sys()?._active);
+  }, 1500);
+})();
+</script>
+
+  
   <body>
     <div id="diag">로딩 중…</div>
 
