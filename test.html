@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>8th Wall AR Test Page</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: sans-serif;
+            display: flex; /* 화면을 좌우로 나누기 위해 flex 사용 */
+        }
+        .panel {
+            height: 100%;
+            box-sizing: border-box;
+        }
+        /* 왼쪽: 타겟 이미지와 안내문 패널 */
+        .target-panel {
+            width: 40%;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        .target-panel h2 {
+            margin-top: 0;
+        }
+        .target-panel img {
+            max-width: 80%;
+            border: 5px solid white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        /* 오른쪽: AR 카메라(iframe) 패널 */
+        .ar-panel {
+            width: 60%;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. 왼쪽 패널: 타겟 이미지와 안내문 -->
+    <div class="target-panel">
+        <h2>AR 타겟 이미지</h2>
+        <p><b>1. 오른쪽 화면에서 카메라 접근을 '허용'하세요.</b></p>
+        <p><b>2. 웹캠을 이 거북이 이미지에 비춰보세요.</b></p>
+        <!-- (중요!) '거북이 타켓사진.jpg' 파일이 필요합니다 -->
+        <img src="거북이 타켓사진.jpg" alt="AR Target Turtle Image">
+    </div>
+
+    <!-- 2. 오른쪽 패널: 8th Wall AR 카메라 -->
+    <div class="ar-panel">
+        <iframe
+          src="https://realmetawinner.8thwall.app/turtle-ar-project/"
+          allowfullscreen
+          allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen"
+        ></iframe>
+    </div>
+
+</body>
+</html>
