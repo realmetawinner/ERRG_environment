@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>거북이 AR 엑스레이</title>
+  <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/mindar-image.prod.js"></script>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.2.5/dist/aframe-extras.min.js"></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; }
+    .ar-placeholder {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: black;
+      color: white;
+      font-family: sans-serif;
+      font-size: 1.5em;
+      text-align: center;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <div class="ar-placeholder">
+    카메라 접근을 허용하고 '거북이 타겟사진'을 비춰주세요!
+  </div>
+
+  <a-scene
+    mindar-image="imageTargetSrc: ./targets.mind;"
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights: true"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    loading-screen="enabled: false"
+  >
+    <a-assets>
+      <img id="xrayImage" src="./xray.png" />
+    </a-assets>
+
+    <a-camera active="false" position="0 0 0"></a-camera>
+
+    <a-entity mindar-image-target="targetIndex: 0">
+      <a-plane
+        src="#xrayImage"
+        position="0 0 0.001" height="1"              width="1"               rotation="0 0 0"        opacity="0.9"           ></a-plane>
+    </a-entity>
+  </a-scene>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sceneEl = document.querySelector('a-scene');
+      const arPlaceholder = document.querySelector('.ar-placeholder');
+
+      // MindAR이 초기화되면 로딩 화면을 숨깁니다.
+      sceneEl.addEventListener('mindar-image-start', function() {
+        arPlaceholder.style.display = 'none';
+      });
+
+      // MindAR이 중지되면 다시 로딩 화면을 표시합니다.
+      sceneEl.addEventListener('mindar-image-stop', function() {
+        arPlaceholder.style.display = 'flex';
+      });
+    });
+  </script>
+</body>
+</html>
