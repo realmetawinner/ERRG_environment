@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>문어 스크래치</title>
     <style>
-        /* ⬇️ 수정된 부분 1: 'Single Day' 폰트를 'Gaegu' 폰트로 변경 */
+        /* 'Gaegu' 폰트 */
         @import url('https://fonts.googleapis.com/css2?family=Gaegu&display=swap');
 
         /* 기본 스타일 */
@@ -13,7 +13,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden; /* 스크롤 방지 */
-            /* ⬇️ 수정된 부분 2: 기본 폰트를 'Gaegu'로 설정 */
+            /* 기본 폰트를 'Gaegu'로 설정 */
             font-family: 'Gaegu', cursive; /* 적용된 폰트 */
             background-color: #f7f7f7;
             display: flex;
@@ -107,13 +107,13 @@
     </div>
 
     <div id="scratch-section">
-        <img id="bg-img" src="문어알.png" alt="배경 이미지" />
+        <img id="bg-img" src="images/mission2/문어알.png" alt="배경 이미지" />
         <canvas id="scratch-canvas"></canvas>
     </div>
 
     <script>
         // --- 설정 변수 ---
-        const OVERLAY_IMAGE_SRC = "문어의마음.jpg";
+        const OVERLAY_IMAGE_SRC = "images/mission2/문어의마음.jpg";
         const REDIRECT_URL = "room2.html";
         const COMPLETION_THRESHOLD = 96;
 
