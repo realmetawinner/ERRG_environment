@@ -45,6 +45,31 @@
             border-radius: 10px; /* 이미지 모서리를 둥글게 */
             box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* 은은한 그림자 효과 */
         }
+
+        /* 버튼을 감싸는 컨테이너 스타일 추가 */
+        .button-container {
+            text-align: center; /* 버튼 중앙 정렬 */
+            margin-top: 20px; /* 마지막 섹션과의 여백 */
+        }
+
+        /* 버튼 스타일 추가 */
+        .action-button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #fff;
+            background-color: #007BFF; /* 파란색 배경 */
+            border: none;
+            border-radius: 5px;
+            text-decoration: none; /* 링크 밑줄 제거 */
+            cursor: pointer; /* 마우스 오버 시 포인터 모양 */
+            transition: background-color 0.3s; /* 부드러운 색상 변경 효과 */
+        }
+
+        .action-button:hover {
+            background-color: #0056b3; /* 마우스 오버 시 배경색 변경 */
+        }
     </style>
 </head>
 <body>
@@ -83,6 +108,10 @@
 문제를 해결하고 미래를 구하자
             </p>
             <img src="https://via.placeholder.com/600x400.png?text=Save+The+Future" alt="미래를 구하자" class="story-image">
+        </div>
+
+        <div class="button-container">
+            <a href="time-machine.html" class="action-button">타임머신 작동방법 확인</a>
         </div>
 
     </div>
