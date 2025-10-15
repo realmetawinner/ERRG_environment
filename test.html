@@ -1,70 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>8th Wall AR Test Page</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            font-family: sans-serif;
-            display: flex; /* 화면을 좌우로 나누기 위해 flex 사용 */
-        }
-        .panel {
-            height: 100%;
-            box-sizing: border-box;
-        }
-        /* 왼쪽: 타겟 이미지와 안내문 패널 */
-        .target-panel {
-            width: 40%;
-            background-color: #f0f0f0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            text-align: center;
-        }
-        .target-panel h2 {
-            margin-top: 0;
-        }
-        .target-panel img {
-            max-width: 80%;
-            border: 5px solid white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        /* 오른쪽: AR 카메라(iframe) 패널 */
-        .ar-panel {
-            width: 60%;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>8th Wall Embed – ImageTarget</title>
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    html, body { height:100%; margin:0; background:#000; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+    .wrap { position:fixed; inset:0; }
+    .frame { width:100%; height:100%; border:0; display:block; }
+    .gate { position:absolute; inset:0; display:grid; place-items:center; background:rgba(0,0,0,.85); color:#fff; z-index:2; }
+    .gate[hidden] { display:none; }
+    .gate button { font-size:18px; padding:14px 20px; border-radius:12px; border:0; cursor:pointer; }
+    .hint { position:absolute; left:50%; bottom:12px; transform:translateX(-50%); color:#bbb; font-size:12px; text-align:center; padding:0 12px; z-index:3; }
+  </style>
 </head>
 <body>
-
-    <!-- 1. 왼쪽 패널: 타겟 이미지와 안내문 -->
-    <div class="target-panel">
-        <h2>AR 타겟 이미지</h2>
-        <p><b>1. 오른쪽 화면에서 카메라 접근을 '허용'하세요.</b></p>
-        <p><b>2. 웹캠을 이 거북이 이미지에 비춰보세요.</b></p>
-        <!-- (중요!) '거북이 타켓사진.jpg' 파일이 필요합니다 -->
-        <img src="거북이 타켓사진.jpg" alt="AR Target Turtle Image">
+  <div class="wrap">
+    <!-- 일부 브라우저(iOS Safari 등)에서 사용자 제스처 후 카메라 시작을 보장 -->
+    <div id="gate" class="gate">
+      <div style="text-align:center; max-width:360px;">
+        <h2 style="margin:0 0 12px;">Start AR</h2>
+        <p style="margin:0 0 16px; line-height:1.4;">카메라 권한을 허용하고 AR을 시작합니다.</p>
+        <button id="startBtn">AR 시작</button>
+      </div>
     </div>
 
-    <!-- 2. 오른쪽 패널: 8th Wall AR 카메라 -->
-    <div class="ar-panel">
-        <iframe
-          src="https://realmetawinner.8thwall.app/turtle-ar-project/"
-          allowfullscreen
-          allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen"
-        ></iframe>
-    </div>
+    <iframe
+      id="xrframe"
+      class="frame"
+      title="8th Wall AR – ImageTarget"
+      src="https://realmetawinner.8thwall.app/imagetarget/"
+      allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen; xr-spatial-tracking"
+      allowfullscreen
+      loading="eager"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
 
+    <div class="hint">
+      안 보이면: 이 도메인이 8th Wall <em>Allowed Domains(Embed)</em>에 등록돼 있는지 확인하세요.
+    </div>
+  </div>
+
+  <script>
+    const gate  = document.getElementById('gate');
+    const btn   = document.getElementById('startBtn');
+    const frame = document.getElementById('xrframe');
+
+    // 사용자 제스처 후 전체화면/포커스 시도 (실패해도 무시)
+    btn.addEventListener('click', async () => {
+      gate.hidden = true;
+      try { if (frame.requestFullscreen) await frame.requestFullscreen(); } catch(e) {}
+      frame.focus();
+    });
+
+    // 데스크톱 등에서 자동 시작을 원하면 아래 주석 해제
+    // if (!/iPhone|iPad|iPod/i.test(navigator.userAgent)) gate.hidden = true;
+  </script>
 </body>
 </html>
