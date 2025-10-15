@@ -11,10 +11,11 @@
             padding: 0;
             height: 100%;
             font-family: 'Gaegu', cursive;
-            background-color: #2c3e50;
+            background-color: #2c3e50; /* 어두운 배경색 */
             color: white;
             display: flex;
             flex-direction: column; /* 콘텐츠를 세로로 배치 */
+            overflow: hidden; /* 스크롤바 숨기기 */
         }
         /* AR 화면을 담는 iframe */
         #ar-frame {
@@ -34,7 +35,10 @@
             padding: 10px;
             box-sizing: border-box;
         }
-        p { font-size: 1.2em; margin: 10px 0; }
+        p { 
+            font-size: 1.2em; 
+            margin: 10px 0;
+        }
         #answer-box {
             font-family: 'Gaegu', cursive;
             font-size: 1.5em;
@@ -43,23 +47,33 @@
             max-width: 300px;
             text-align: center;
             border-radius: 5px;
+            border: 2px solid white;
+            background-color: #34495e;
+            color: white;
+        }
+        #answer-box::placeholder {
+            color: #95a5a6;
         }
     </style>
 </head>
 <body>
 
+    <!-- 1. 8th Wall AR 뷰어 (iframe) -->
+    <!-- 제공해주신 새로운 주소로 교체했습니다. -->
     <iframe
       id="ar-frame"
-      src="https://realmetawinner.8thwall.app/turtle-ar-project/"
+      src="https://realmetawinner.8thwall.app/turtle-ar/"
       allowfullscreen
       allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen">
     </iframe>
 
+    <!-- 2. 문제 및 정답 입력창 -->
     <div class="control-panel">
         <p>거북이를 비춰 힌트를 찾고, 몸속에 있는 물건의 첫 글자를 입력하세요.</p>
         <input type="text" id="answer-box" placeholder="정답 입력 후 Enter">
     </div>
 
+    <!-- 3. 정답 확인 스크립트 -->
     <script>
         const inputBox = document.getElementById('answer-box');
         inputBox.addEventListener('keyup', function(event) {
@@ -70,7 +84,7 @@
                     alert('정답! 다음 방으로 이동합니다.');
                     window.location.href = 'room2.html';
                 } else {
-                    alert('틀렸습니다!');
+                    alert('틀렸습니다! 다시 확인해보세요.');
                     inputBox.value = '';
                 }
             }
