@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과거 요원들의 메시지 확인</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* 'Gaegu' 폰트를 전체 페이지에 적용 */
+        body {
+            font-family: 'Gaegu', cursive;
+        }
+
+        /* 잘못된 값 입력 시 흔들리는 애니메이션 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-7px); }
+            20%, 40%, 60%, 80% { transform: translateX(7px); }
+        }
+        .shake {
+            animation: shake 0.6s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="flex flex-col h-screen justify-between max-w-lg mx-auto bg-white p-6 text-center">
+
+        <div>
+            <h1 class="text-2xl font-bold my-3 text-gray-800">
+                과거팀의 요원들이 보낸 메시지를 확인해보세요.
+            </h1>
+        </div>
+
+        <div class="w-full my-4 rounded-lg border-4 border-gray-200 overflow-hidden flex-grow">
+            <iframe
+                class="w-full h-full"
+                src="realmetawinner.8thwall.app/ar-seahorse/"
+                allowfullscreen
+                allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen"
+                title="AR SeaHorse Viewer">
+            </iframe>
+        </div>
+
+        <div>
+            <p class="text-2xl my-3 text-gray-700">
+               비밀번호를 입력해주세요
+            </p>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
+                <input
+                    type="text"
+                    id="userInput"
+                    class="transition-all duration-300 border-2 border-gray-300 p-3 rounded-lg w-full text-center text-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="확인한 정보 입력"
+                >
+                <button
+                    id="submitButton"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-xl transition-transform transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                    입력
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const userInput = document.getElementById('userInput');
+        const submitButton = document.getElementById('submitButton');
+
+        const checkAnswer = () => {
+            const answer = userInput.value.trim();
+
+            if (answer === '1331') {
+                window.location.href = 'room2.html';
+            } else {
+                userInput.classList.remove('shake', 'border-red-500');
+                void userInput.offsetWidth;
+                userInput.classList.add('shake', 'border-red-500');
+                userInput.focus();
+                userInput.select();
+
+                setTimeout(() => {
+                    userInput.classList.remove('shake');
+                }, 600);
+            }
+        };
+
+        submitButton.addEventListener('click', checkAnswer);
+
+        userInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                checkAnswer();
+            }
+        });
+
+        userInput.addEventListener('input', () => {
+             if (userInput.classList.contains('border-red-500')) {
+                 userInput.classList.remove('border-red-500');
+             }
+        });
+    </script>
+</body>
+</html>
