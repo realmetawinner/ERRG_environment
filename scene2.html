@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바다 속 이야기</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS 초기화 및 기본 스타일 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Gaegu', cursive;
+            background: linear-gradient(to bottom, #b0e0e6, #f0f8ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* 동화풍 이야기 카드(창) 컨테이너 */
+        .story-container {
+            width: 90%;
+            max-width: 400px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 100, 150, 0.15);
+            padding: 24px;
+            text-align: center;
+            border: 2px solid #ffffff;
+        }
+
+        /* GIF 이미지 스타일 */
+        .seahorse-gif {
+            width: 100%;
+            max-width: 300px; 
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e0f7fa;
+        }
+
+        /* 텍스트 스타일 */
+        .content-text {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: #0056b3;
+            margin-bottom: 24px;
+            line-height: 1.4;
+        }
+
+        /* 버튼 스타일 (<a> 태그에도 적용됨) */
+        .story-button {
+            display: block; /* 링크(a) 태그를 블록 요소로 만듦 */
+            width: 100%;
+            padding: 14px 20px;
+            font-family: 'Gaegu', cursive;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff; /* 텍스트 색상 */
+            background-color: #ff6b6b;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            text-decoration: none; /* 링크 밑줄 제거 */
+            box-shadow: 0 4px 0 #e05a5a;
+            transition: all 0.2s ease;
+        }
+
+        /* 버튼 클릭 시 눌리는 효과 */
+        .story-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #e05a5a;
+        }
+
+        /* PC에서 호버 시 효과 */
+        @media (hover: hover) {
+            .story-button:hover {
+                background-color: #ff8787;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="story-container">
+        
+        <img src="images/dolphin.gif" alt="움직이는 돌고래 GIF" class="seahorse-gif">
+        
+        <p class="content-text">돌고래에게 무슨일이 생긴걸까</p>
+        
+        <a href="mission1.html" class="story-button">이야기들어보기</a>
+        
+    </div>
+
+</body>
+</html>
