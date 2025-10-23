@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>세번째요원AR인식</title>
+    
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+    <link rel="stylesheet" href="css/ar-style.css">
+</head>
+<body>
+
+    <a-scene embedded vr-mode-ui="enabled: false;" arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+        
+        <a-marker id="ar-marker" type='pattern' url='person3.patt'>
+            
+            <a-image 
+                src="images/overlay-person.png" 
+                rotation="-90 0 0" 
+                scale="5 5 5"
+                position="0 0.1 0">
+            </a-image>
+            
+        </a-marker>
+
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <div class="button-container">
+        <button id="action-button">다음 페이지로 이동</button>
+    </div>
+
+    <script src="js/ar-logic.js"></script>
+</body>
+</html>
