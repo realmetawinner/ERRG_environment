@@ -17,6 +17,7 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
+            display: none; /* ▼ 수정: 처음에는 버튼 컨테이너를 숨김 */
         }
         #action-button {
             padding: 12px 24px;
@@ -29,27 +30,13 @@
             cursor: pointer;
             transition: background-color 0.3s, opacity 0.3s;
         }
-
-        /* ▼ 추가: 비활성화 상태일 때의 버튼 스타일 */
-        #action-button:disabled {
-            background-color: #cccccc; /* 회색 배경 */
-            color: #666666; /* 어두운 글씨 */
-            cursor: not-allowed; /* '허용 안 됨' 커서 */
-            opacity: 0.7;
-        }
+        /* :disabled 스타일은 더 이상 필요 없으므로 제거했습니다. */
     </style>
 </head>
 <body>
 
-    <!-- 
-      'embedded'와 'arjs' 속성은 a-scene이 로드될 때 AR 기능을 초기화합니다.
-    -->
     <a-scene embedded vr-mode-ui="enabled: false;" arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
         
-        <!-- 
-          id="ar-marker"를 통해 이 마커 요소를 스크립트에서 참조합니다.
-          'markerFound'와 'markerLost' 이벤트가 이 요소에서 발생합니다.
-        -->
         <a-marker id="ar-marker" type='pattern' url='person4.patt'>
             
             <a-image 
@@ -65,8 +52,8 @@
     </a-scene>
 
     <div class="button-container">
-        <!-- ▼ 수정: 'disabled' 속성을 추가하여 처음에는 비활성화 상태로 시작 -->
-        <button id="action-button" disabled>나의 미션으로 이동</button>
+        <!-- ▼ 수정: 'disabled' 속성 제거 -->
+        <button id="action-button">나의 미션으로 이동</button>
     </div>
 
     <!-- <script src="js/ar-logic.js"></script> -->
@@ -75,14 +62,15 @@
     <script>
         document.addEventListener('DOMContentLoaded', (event) => {
             const actionButton = document.getElementById('action-button');
-            const arMarker = document.getElementById('ar-marker'); // 마커 요소를 ID로 선택
+            const buttonContainer = document.querySelector('.button-container'); // 버튼 컨테이너 선택
+            const arMarker = document.getElementById('ar-marker');
+
+            let hasMarkerBeenFound = false; // ▼ 추가: 마커를 찾았는지 여부를 추적하는 플래그
 
             // --- 버튼 클릭 이벤트 ---
-            // (버튼이 활성화되었을 때만 클릭 이벤트가 동작합니다)
             if (actionButton) {
                 actionButton.addEventListener('click', function() {
-                    // 버튼이 활성화된 상태에서 클릭되면 페이지 이동
-                    window.location.href = 'scene-turtle.html';
+                    window.location.href = 'scene-octopus.html';
                 });
             }
 
@@ -90,19 +78,20 @@
             if (arMarker) {
                 // 'markerFound' 이벤트: 마커가 인식되었을 때
                 arMarker.addEventListener('markerFound', () => {
-                    console.log('마커를 찾았습니다!'); // 디버깅용
-                    if (actionButton) {
-                        actionButton.disabled = false; // 버튼 활성화
+                    // ▼ 수정: 마커를 *처음* 찾았을 때만 실행
+                    if (!hasMarkerBeenFound) {
+                        console.log('마커를 처음 찾았습니다! 버튼을 활성화합니다.');
+                        hasMarkerBeenFound = true; // 플래그를 true로 설정
+                        
+                        if (buttonContainer) {
+                            buttonContainer.style.display = 'block'; // 버튼 컨테이너를 보이게 함
+                        }
                     }
                 });
 
-                // 'markerLost' 이벤트: 마커 인식이 끊겼을 때
-                arMarker.addEventListener('markerLost', () => {
-                    console.log('마커를 잃었습니다.'); // 디버깅용
-                    if (actionButton) {
-                        actionButton.disabled = true; // 버튼 비활성화
-                    }
-                });
+                // ▼ 'markerLost' 이벤트 리스너를 제거하여,
+                // 마커를 잃어도 버튼이 사라지지 않게 합니다.
+
             } else {
                 console.error('AR 마커 요소를 찾을 수 없습니다 (id="ar-marker")');
             }
