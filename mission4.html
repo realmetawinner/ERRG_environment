@@ -31,10 +31,9 @@
 
         /* 텍스트 스타일 */
         p {
-            font-size: 1em;
+            font-size: 1em; /* 폰트 크기 수정 (기존 1.5em에서 1em으로) */
             font-weight: 700;
-            /* 👇 줄 간격을 기존의 절반 수준으로 수정 */
-            line-height: 1; 
+            line-height: 1; /* 줄 간격 수정 */
             margin-bottom: 40px;
         }
 
@@ -69,11 +68,31 @@
             text-align: center;
             width: 80%;
             max-width: 300px;
+            margin-bottom: 15px; /* ▼ 추가: 버튼과의 간격 */
         }
 
         /* 입력창 placeholder 텍스트 스타일 */
         #input-box::placeholder {
             color: #555;
+        }
+
+        /* ▼ 추가: 전송 버튼 스타일 */
+        #submit-button {
+            font-family: 'Gaegu', cursive;
+            font-size: 1.5em;
+            padding: 10px 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: #1E272E; /* 어두운 배경 */
+            color: #f0f8ff; /* 밝은 텍스트 */
+            cursor: pointer; /* 클릭 가능한 커서 */
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* ▼ 추가: 버튼 호버(hover) 효과 */
+        #submit-button:hover {
+            background-color: #f0f8ff; /* 밝은 배경 */
+            color: #1E272E; /* 어두운 텍스트 */
         }
     </style>
 </head>
@@ -88,17 +107,34 @@
         </div>
 
         <input type="text" id="input-box" placeholder="알파벳을 입력하세요">
-    </div>
+        <br> <button id="submit-button">확인</button> </div>
 
     <script>
         const inputBox = document.getElementById('input-box');
+        const submitButton = document.getElementById('submit-button'); // ▼ 추가: 버튼 선택
 
+        // ▼ 수정: 정답 확인 로직을 별도 함수로 분리
+        function checkAnswer() {
+            if (inputBox.value.toLowerCase() === 'e') {
+                window.location.href = 'room2.html';
+            }
+            // (참고) 틀렸을 때의 동작을 추가할 수 있습니다.
+            // else {
+            //     alert("틀렸습니다. 다시 시도하세요.");
+            //     inputBox.value = ""; // 입력창 비우기
+            // }
+        }
+
+        // ▼ 수정: Enter 키 이벤트 리스너가 함수를 호출하도록 변경
         inputBox.addEventListener('keyup', function(event) {
             if (event.key === 'Enter') {
-                if (inputBox.value.toLowerCase() === 'e') {
-                    window.location.href = 'room2.html';
-                }
+                checkAnswer();
             }
+        });
+
+        // ▼ 추가: 버튼 클릭 이벤트 리스너
+        submitButton.addEventListener('click', function() {
+            checkAnswer();
         });
     </script>
 
