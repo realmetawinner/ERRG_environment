@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>지구를 구하라</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+
+        body {
+            font-family: 'Gowun Dodum', serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid #5a4a8c;
+            border-radius: 15px;
+            padding: 40px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 0 25px rgba(128, 0, 255, 0.4);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.2em;
+            color: #ffffff;
+            text-shadow: 0 0 10px #9f78ff, 0 0 20px #9f78ff;
+            margin-bottom: 25px;
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.7;
+            color: #c0c0c0;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-top: 20px;
+        }
+
+        #codeInput {
+            font-family: 'Gowun Dodum', serif;
+            font-size: 1.2em;
+            padding: 12px 15px;
+            width: 70%;
+            max-width: 300px;
+            border: 2px solid #7e57c2;
+            border-radius: 8px;
+            background-color: #1e1e2f;
+            color: #ffffff;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(126, 87, 194, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #codeInput:focus {
+            outline: none;
+            border-color: #b39ddb;
+            box-shadow: 0 0 20px rgba(179, 157, 219, 0.5);
+        }
+
+        #submitButton {
+            font-family: 'Gowun Dodum', serif;
+            font-size: 1.2em;
+            padding: 12px 25px;
+            margin-left: 10px;
+            border: none;
+            border-radius: 8px;
+            background-color: #7e57c2;
+            color: #ffffff;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(126, 87, 194, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        #submitButton:hover {
+            background-color: #9575cd;
+            box-shadow: 0 0 25px rgba(149, 117, 205, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* 모바일 화면 대응 */
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            p {
+                font-size: 1em;
+            }
+            #codeInput {
+                width: 90%;
+                margin-bottom: 15px;
+            }
+            #submitButton {
+                width: 90%;
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>위기의 지구</h1>
+        <p>
+            환경오염이 심각해지면서 해수면은 점점 높아지고,<br>
+            대한민국은 바다 속에 잠기게 된다.<br>
+            이 위기를 구하기 위해 선발된 4명의 요원.<br>
+            과연 위기의 지구를 구할 수 있을것인가
+        </p>
+
+        <div class="input-group">
+            <input type="text" id="codeInput" placeholder="입장 코드를 입력하세요">
+            <button id="submitButton" onclick="checkCode()">입력</button>
+        </div>
+    </div>
+
+    <script>
+        function checkCode() {
+            // 정답 코드
+            const correctCode = "ERRG2025";
+            
+            // 입력된 값 가져오기
+            let inputCode = document.getElementById('codeInput').value;
+            
+            // 대소문자 구분 없이 비교 (필요시 toUpperCase() 추가)
+            if (inputCode.toUpperCase() === correctCode) {
+                // 정답일 경우 story1.html로 이동
+                window.location.href = "story1.html";
+            } else {
+                // 오답일 경우
+                alert("코드가 일치하지 않습니다. 다시 시도하세요.");
+                document.getElementById('codeInput').value = ""; // 입력창 비우기
+            }
+        }
+
+        // Enter 키로도 입력 가능하게 설정
+        document.getElementById('codeInput').addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // 기본 Enter 동작 (폼 제출 등) 방지
+                document.getElementById('submitButton').click(); // 버튼 클릭 이벤트 실행
+            }
+        });
+    </script>
+
+</body>
+</html>
