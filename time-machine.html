@@ -3,33 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room 2</title>
+    <title>비밀 연구소 잠입</title>
     <style>
         body {
-            font-family: sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
+            /* 바다 속 판타지 느낌의 배경 */
+            background: linear-gradient(to bottom, #023047, #005f73, #0a9396);
+            color: #ffffff; /* 텍스트 색상을 밝게 */
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-        .container {
             padding: 20px;
-            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.3); /* 반투명 배경 */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #94d2bd; /* 제목 색상 */
+            font-size: 2.5em;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 3px solid #94d2bd;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #ee9b00; /* 버튼 색상 */
+            color: #023047; /* 버튼 텍스트 색상 */
+            padding: 12px 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-decoration: none;
             border-radius: 8px;
-            background-color: #fff;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ffb703;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>타임머신 작동방법</h1>
-        <p>타임머신을 탈 준비가 되었나요?!</p>
-        <p>이제 다음 미션을 해결하세요.</p>
+        <h1>타임머신 내부</h1>
+
+        <p>
+            이제 여러분은 이 타임머신의 문을 열고 나가면<br>
+            데빌기업의 비밀 연구소로 잠입합니다.<br>
+            그 곳에서는 여러분들이 각자 미션을 수행해야합니다.
+        </p>
+
+        <img src="images/story1/machine1.png" alt="타임머신 이미지">
+
+        <a href="story2.html" class="btn">다음미션</a>
     </div>
+
 </body>
 </html>
-
