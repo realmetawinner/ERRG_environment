@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바다 속 판타지 - 거북이 이야기</title>
+    <style>
+        body {
+            /* 바다 속 판타지 느낌의 그라데이션 배경 */
+            background: linear-gradient(to bottom, #003973, #2c77a8, #45b6d1);
+            color: #ffffff; /* 텍스트 색상 */
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-sizing: border-box;
+        }
 
+        .container {
+            background: rgba(0, 0, 0, 0.2); /* 내용 구분을 위한 반투명 배경 */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #f0f8ff; /* 밝은 하늘색 */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2em;
+            line-height: 1.8; /* 줄 간격 */
+            margin-bottom: 30px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 3px solid #f0f8ff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
+        }
+
+        button {
+            background-color: #ffc107; /* 밝은 노란색 버튼 */
+            color: #333;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 30px; /* 둥근 버튼 */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            background-color: #ffa000; /* 호버 시 더 진한 노란색 */
+            transform: scale(1.05); /* 살짝 커지는 효과 */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>밝혀진 진실</h1>
+
+        <p>
+            거북이가 아픈 원인은<br>
+            플라스틱 쓰레기 때문이었어.<br>
+            비용 절감을 위해<br>
+            바다에 몰래 쓰레기를 폐기하던<br>
+            데빌기업의 악행이<br>
+            거북이를 병들게 한거야.
+        </p>
+
+        <img src="images/success/success-turtle.png" alt="성공한 거북이">
+
+        <button onclick="window.location.href='story2.html'">
+            미션완료
+        </button>
+    </div>
+
+</body>
+</html>
