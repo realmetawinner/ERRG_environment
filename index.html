@@ -102,6 +102,18 @@
             transform: translateY(-2px);
         }
 
+        /* --- 추가된 스타일 --- */
+        /* 오류 메시지를 위한 공간 확보 및 스타일 */
+        #message {
+            color: #ff6b6b; /* 오류 메시지 색상 */
+            margin-top: 15px;
+            font-size: 1em;
+            font-weight: bold;
+            height: 1.2em; /* 메시지 공간을 미리 잡아두어 레이아웃이 밀리지 않게 함 */
+        }
+        /* --- --- */
+
+
         /* 모바일 화면 대응 */
         @media (max-width: 600px) {
             .container {
@@ -139,35 +151,62 @@
             <input type="text" id="codeInput" placeholder="입장 코드를 입력하세요">
             <button id="submitButton" onclick="checkCode()">입력</button>
         </div>
+        
+        <!-- 오류 메시지가 표시될 위치 -->
+        <p id="message"></p>
     </div>
 
     <script>
+        // 메시지 표시 엘리먼트
+        const messageEl = document.getElementById('message');
+        const codeInputEl = document.getElementById('codeInput');
+
         function checkCode() {
             // 정답 코드
             const correctCode = "ERRG2025";
             
             // 입력된 값 가져오기
-            let inputCode = document.getElementById('codeInput').value;
+            let inputCode = codeInputEl.value;
             
             // 대소문자 구분 없이 비교 (필요시 toUpperCase() 추가)
             if (inputCode.toUpperCase() === correctCode) {
                 // 정답일 경우 story1.html로 이동
-                window.location.href = "story1.html";
+                // 참고: 이 환경에서는 다른 HTML 파일로의 이동이 제한될 수 있습니다.
+                messageEl.style.color = "#86E57F"; // 성공 색상
+                messageEl.textContent = "인증 성공! 엔젤연구소로 이동합니다...";
+                // 1초 후 이동 시도
+                setTimeout(() => {
+                    window.location.href = "story1.html";
+                }, 1000);
+
             } else {
-                // 오답일 경우
-                alert("코드가 일치하지 않습니다. 다시 시도하세요.");
-                document.getElementById('codeInput').value = ""; // 입력창 비우기
+                // --- 수정된 부분 ---
+                // alert() 대신 message 엘리먼트에 텍스트 표시
+                messageEl.style.color = "#ff6b6b"; // 오류 색상
+                messageEl.textContent = "코드가 일치하지 않습니다. 다시 시도하세요.";
+                // --- ---
+                
+                codeInputEl.value = ""; // 입력창 비우기
+                codeInputEl.focus(); // 입력창에 다시 포커스
             }
         }
 
         // Enter 키로도 입력 가능하게 설정
-        document.getElementById('codeInput').addEventListener('keyup', function(event) {
+        codeInputEl.addEventListener('keyup', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault(); // 기본 Enter 동작 (폼 제출 등) 방지
                 document.getElementById('submitButton').click(); // 버튼 클릭 이벤트 실행
             }
         });
-    </script>
 
+        // --- 추가된 부분 ---
+        // 사용자가 다시 입력을 시작하면 오류 메시지 지우기
+        codeInputEl.addEventListener('input', function() {
+            if (messageEl.textContent !== "") {
+                messageEl.textContent = "";
+            }
+        });
+        // --- ---
+    </script>
 </body>
 </html>
