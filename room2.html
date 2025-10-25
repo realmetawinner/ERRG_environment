@@ -3,32 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Room 2</title>
+    <title>데빌기업 비밀연구소</title>
     <style>
-        body {
-            font-family: sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        /* * 기본 스타일 리셋 및 페이지 분위기 설정
+         */
+        * {
             margin: 0;
+            padding: 0;
+            box-sizing: border-box; /* padding과 border가 너비에 포함되도록 설정 */
+        }
+
+        body {
+            /* 판타지 + 비밀연구소 느낌의 어두운 그라데이션 배경 */
+            background: linear-gradient(180deg, #0a0f2c 0%, #000000 100%);
+            color: #e0e0e0; /* 기본 텍스트 색상 (밝은 회색) */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* * 메인 컨텐츠 영역 
+         */
+        .container {
+            max-width: 600px; /* 모바일 화면에 최적화된 최대 너비 */
+            margin: 0 auto;   /* 중앙 정렬 */
             text-align: center;
         }
-        .container {
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #fff;
+
+        /* * 본문 텍스트 스타일 
+         */
+        h2 {
+            font-size: 1.6rem; /* 2025년 데빌기업... */
+            font-weight: 600;
+            margin-top: 30px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+            color: #ffffff;
+        }
+
+        p {
+            font-size: 1rem; /* 중학교처럼 보이는... */
+            line-height: 1.7;
+            margin-bottom: 40px;
+            color: #c0c0c0; /* 본문 텍스트는 제목보다 약간 어둡게 */
+        }
+
+        /* * 이미지 스타일 
+         */
+        .story-image {
+            width: 100%; /* 컨테이너 너비에 맞춤 */
+            max-width: 400px; /* 이미지가 너무 커지는 것 방지 */
+            height: auto;
+            border-radius: 12px; /* 모서리를 둥글게 */
+            margin-bottom: 25px;
+            border: 1px solid #333; /* 얇은 테두리 */
+        }
+
+        /* * 버튼 리스트 컨테이너
+         */
+        .mission-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* 버튼 사이의 간격 */
+        }
+
+        /* * 개별 버튼 스타일 (첨부파일 참조)
+         */
+        .mission-btn {
+            display: flex; /* 텍스트와 화살표를 양쪽으로 정렬 */
+            justify-content: space-between;
+            align-items: center;
+            
+            background-color: #f0f4f8; /* 밝은 회색 배경 (첨부파일 참조) */
+            color: #2c3e50; /* 어두운 텍스트 색상 */
+            
+            padding: 16px 20px;
+            border-radius: 12px; /* 둥근 모서리 */
+            
+            text-decoration: none; /* 링크 밑줄 제거 */
+            font-size: 1.1rem;
+            font-weight: 600;
+            
+            transition: all 0.2s ease-in-out; /* 부드러운 호버 효과 */
+        }
+
+        /* 마우스를 올렸을 때 효과 */
+        .mission-btn:hover {
+            background-color: #ffffff;
+            transform: scale(1.02); /* 살짝 커지는 효과 */
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+
+        /* 버튼 안의 화살표(>) 스타일 */
+        .mission-btn .arrow {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #888;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>미션성공</h1>
-        <p>이곳으로 이동하는 데 성공했습니다!</p>
-        <p>이제 다음 미션을 해결하세요.</p>
+
+        <h2>-2025년의 데빌기업의 비밀연구-</h2>
+
+        <img src="images/story2/school.png" alt="데빌기업 비밀연구소 전경" class="story-image">
+
+        <p>
+            이제 여러분들은 모두의 힘을 합쳐 마지막 미션을 수행해야 합니다.
+        </p>
+
+        <nav class="mission-buttons">
+            <a href="mission-fish.html" class="mission-btn">
+                <span>흰동가리를 구해줘</span>
+                <span class="arrow">&gt;</span>
+        </nav>
+
     </div>
+
 </body>
 </html>
