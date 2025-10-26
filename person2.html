@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>첫번째 요원 AR 인식 (Marker 1)</title>
+    <title>두번째 요원 AR 인식</title>
     
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
@@ -48,13 +48,13 @@
     </a-scene>
 
     <div class="button-container">
-        <button id="action-button">지정된 페이지1 로 이동</button>
+        <button id="action-button">미션 확인하기</button>
     </div>
 
     <script>
         window.addEventListener('load', function () {
-            // ▼ 중요: HTML의 ID와 일치하는 'ar-marker1'을 참조합니다.
-            const marker = document.getElementById('ar-marker1'); 
+            // ▼ 수정: HTML의 ID와 일치하는 'ar-marker2'을 참조합니다.
+            const marker = document.getElementById('ar-marker2'); 
             const button = document.getElementById('action-button');
             const buttonContainer = document.querySelector('.button-container');
             
@@ -64,7 +64,8 @@
                 // 이벤트: 마커가 인식되었을 때
                 marker.addEventListener('markerFound', function() {
                     if (!hasMarkerBeenFound) {
-                        console.log('Person 1 마커를 찾았습니다! 버튼을 활성화합니다.');
+                        // ▼ 수정: 콘솔 로그 변경
+                        console.log('Person 2 마커를 찾았습니다! 버튼을 활성화합니다.'); 
                         hasMarkerBeenFound = true; 
                         
                         if (buttonContainer) {
@@ -73,13 +74,14 @@
                     }
                 });
             } else {
-                console.error('AR 마커 요소 (ar-marker1)를 찾을 수 없습니다.');
+                // ▼ 수정: 콘솔 에러 메시지 변경
+                console.error('AR 마커 요소 (ar-marker2)를 찾을 수 없습니다.'); 
             }
             
             // 이벤트: HTML 버튼이 클릭되었을 때
             button.addEventListener('click', function() {
                 console.log('버튼이 클릭되었습니다!');
-                // ▼ 중요: person2.html에서 이동할 페이지 URL
+                // ▼ 수정: person2.html에서 이동할 페이지 URL
                 window.location.href = 'scene-dolphin.html'; 
             });
             
