@@ -1,3 +1,14 @@
+알겠습니다. "흰동가리를 구해줘" 버튼(`id="btn-final-mission"`)에 클릭 이벤트를 추가하여, 해당 버튼을 누르면 4개의 `localStorage` 변수(`seahorse`, `dolphin`, `turtle`, `octopus`)를 모두 '0'으로 초기화하는 스크립트를 추가했습니다.
+
+이 기능은 `DOMContentLoaded` 이벤트 리스너 내부에 추가하여 페이지가 처음 로드될 때 "흰동가리를 구해줘" 버튼에 클릭 이벤트가 한 번만 등록되도록 했습니다.
+
+`pageshow` 이벤트는 이전과 동일하게 버튼의 표시 상태를 갱신하는 역할을 수행합니다.
+
+### 수정된 `story2.html` 전체 코드
+
+`<script>` 블록의 가장 하단에 `DOMContentLoaded` 이벤트 리스너가 추가되었습니다.
+
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -5,29 +16,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>데빌기업 비밀연구소</title>
     <style>
-        /* ... (style 태그 내용은 이전과 동일) ... */
+        /* * 기본 스타일 리셋 및 페이지 분위기 설정
+         */
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box; 
+            box-sizing: border-box; /* padding과 border가 너비에 포함되도록 설정 */
         }
 
         body {
+            /* 판타지 + 비밀연구소 느낌의 어두운 그라데이션 배경 */
             background: linear-gradient(180deg, #0a0f2c 0%, #000000 100%);
-            color: #e0e0e0; 
+            color: #e0e0e0; /* 기본 텍스트 색상 (밝은 회색) */
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
             min-height: 100vh;
             padding: 20px;
         }
 
+        /* * 메인 컨텐츠 영역 
+         */
         .container {
-            max-width: 600px; 
-            margin: 0 auto;  
+            max-width: 600px; /* 모바일 화면에 최적화된 최대 너비 */
+            margin: 0 auto;   /* 중앙 정렬 */
             text-align: center;
         }
 
+        /* * 본문 텍스트 스타일 
+         */
         h2 {
-            font-size: 1.6rem; 
+            font-size: 1.6rem; /* 2025년 데빌기업... */
             font-weight: 600;
             margin-top: 30px;
             margin-bottom: 25px;
@@ -36,68 +53,103 @@
         }
 
         p {
-            font-size: 1rem; 
+            font-size: 1rem; /* 중학교처럼 보이는... */
             line-height: 1.7;
             margin-bottom: 40px;
-            color: #c0c0c0; 
+            color: #c0c0c0; /* 본문 텍스트는 제목보다 약간 어둡게 */
         }
 
+        /* * 이미지 스타일 
+         */
         .story-image {
-            width: 100%; 
-            max-width: 400px; 
+            width: 100%; /* 컨테이너 너비에 맞춤 */
+            max-width: 400px; /* 이미지가 너무 커지는 것 방지 */
             height: auto;
-            border-radius: 12px; 
+            border-radius: 12px; /* 모서리를 둥글게 */
             margin-bottom: 25px;
-            border: 1px solid #333; 
+            border: 1px solid #333; /* 얇은 테두리 */
         }
 
+        /* * 버튼 리스트 컨테이너
+         */
         .mission-buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px; 
+            gap: 12px; /* 버튼 사이의 간격 */
         }
-        
+
+        /* * 개별 버튼 스타일 (첨부파일 참조)
+         */
         .mission-btn {
-            display: flex; 
+            display: flex; /* 텍스트와 화살표를 양쪽으로 정렬 */
             justify-content: space-between;
             align-items: center;
-            background-color: #f0f4f8; 
-            color: #2c3e50; 
+            
+            background-color: #f0f4f8; /* 밝은 회색 배경 (첨부파일 참조) */
+            color: #2c3e50; /* 어두운 텍스트 색상 */
+            
             padding: 16px 20px;
-            border-radius: 12px; 
-            text-decoration: none; 
+            border-radius: 12px; /* 둥근 모서리 */
+            
+            text-decoration: none; /* 링크 밑줄 제거 */
             font-size: 1.1rem;
             font-weight: 600;
-            transition: all 0.2s ease-in-out; 
+            
+            transition: all 0.2s ease-in-out; /* 부드러운 호버 효과 */
         }
-        
-        .mission-btn:not(.completed):hover {
+
+        /* 마우스를 올렸을 때 효과 */
+        .mission-btn:not(.completed):not(#btn-final-mission):hover {
             background-color: #ffffff;
-            transform: scale(1.02); 
+            transform: scale(1.02); /* 살짝 커지는 효과 */
             box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
         }
 
+        /* 버튼 안의 화살표(>) 스타일 */
         .mission-btn .arrow {
             font-size: 1.5rem;
             font-weight: bold;
             color: #888;
         }
-        
+
+        /* 완료된 버튼 스타일 */
         .mission-btn.completed {
-            background-color: #6c757d; 
-            color: #ccc; 
-            pointer-events: none; 
+            background-color: #6c757d; /* 회색 배경 */
+            color: #ccc; /* 밝은 회색 텍스트 */
+            pointer-events: none; /* 클릭 비활성화 */
             cursor: not-allowed;
         }
 
         .mission-btn.completed .arrow {
             color: #999;
         }
+
+        /* 1. 최종 미션 버튼 스타일 및 기본 숨김 */
+        #btn-final-mission {
+            display: none; /* 기본적으로 숨김 */
+            background-color: #ffc107; /* 눈에 띄는 노란색 계열 */
+            color: #1a1a1a;
+            font-weight: bold;
+            margin-top: 25px; /* 위쪽 버튼들과 간격 */
+            border: 2px solid #fff;
+        }
+        
+        #btn-final-mission .arrow {
+            color: #1a1a1a;
+        }
+        
+        #btn-final-mission:hover {
+            background-color: #ffd54f;
+            transform: scale(1.03);
+            box-shadow: 0 4px 20px rgba(255, 193, 7, 0.3);
+        }
+
     </style>
 </head>
 <body>
 
     <div class="container">
+
         <h2>타임머신을 타고 도착한 이곳은 2025년의 데빌기업의 비밀연구소입니다.</h2>
 
         <img src="images/story2/school.png" alt="데빌기업 비밀연구소 전경" class="story-image">
@@ -129,6 +181,11 @@
             </a>
         </nav>
 
+        <a href="story3.html" class="mission-btn" id="btn-final-mission">
+            <span>흰동가리를 구해줘</span>
+            <span class="arrow">&gt;</span>
+        </a>
+
     </div>
 
     <script>
@@ -136,42 +193,67 @@
         function checkMissionStatus() {
             
             // 버튼 하나를 업데이트하는 내부 헬퍼 함수
-            function updateMissionButton(buttonId, localStorageKey) {
+            function updateMissionButton(buttonId, localStorageKey, originalText) {
                 const button = document.getElementById(buttonId);
-                // [개선] 버튼이 존재하고, 스토리지 값이 '1'일 때만 업데이트
                 if (button && localStorage.getItem(localStorageKey) === '1') {
                     button.classList.add('completed');
                     button.querySelector('span:first-child').textContent = '미션 완료';
                 } 
-                // [추가] 만약 스토리지 값이 '1'이 아니라면 (예: success-fish로 초기화된 경우)
-                // 버튼을 원래 상태로 되돌립니다.
                 else if (button) {
+                    // 리셋되었을 경우를 대비해 원상 복구
                     button.classList.remove('completed');
-                    // 텍스트도 원래대로 돌려야 합니다. (각 버튼의 원래 텍스트로)
-                    // 이 예제에서는 텍스트를 하드코딩합니다.
-                    const originalTexts = {
-                        'btn-mission1': '해마를 구해줘',
-                        'btn-mission2': '돌고래를 구해줘',
-                        'btn-mission3': '거북이를 구해줘',
-                        'btn-mission4': '문어를 구해줘'
-                    };
-                    button.querySelector('span:first-child').textContent = originalTexts[buttonId];
+                    button.querySelector('span:first-child').textContent = originalText;
                 }
             }
 
-            // 모든 버튼에 대해 업데이트 실행
-            updateMissionButton('btn-mission1', 'seahorse');
-            updateMissionButton('btn-mission2', 'dolphin');
-            updateMissionButton('btn-mission3', 'turtle');
-            updateMissionButton('btn-mission4', 'octopus');
+            // 4개 미션 버튼 업데이트
+            updateMissionButton('btn-mission1', 'dolphin', '해마를 구해줘');
+            updateMissionButton('btn-mission2', 'seahorse', '돌고래를 구해줘');
+            updateMissionButton('btn-mission3', 'turtle', '거북이를 구해줘');
+            updateMissionButton('btn-mission4', 'octopus', '문어를 구해줘');
+
+            // 3. 4개 변수 모두 확인하여 최종 미션 버튼 표시
+            const isDolphinDone = localStorage.getItem('dolphin') === '1';
+            const isSeahorseDone = localStorage.getItem('seahorse') === '1';
+            const isTurtleDone = localStorage.getItem('turtle') === '1';
+            const isOctopusDone = localStorage.getItem('octopus') === '1';
+
+            const finalMissionButton = document.getElementById('btn-final-mission');
+
+            if (finalMissionButton) { // 버튼이 존재하는지 확인
+                if (isDolphinDone && isSeahorseDone && isTurtleDone && isOctopusDone) {
+                    // 모든 미션이 완료되었으면 버튼을 'flex'로 보여줌
+                    finalMissionButton.style.display = 'flex';
+                } else {
+                    // 하나라도 미완료 상태라면 버튼을 숨김 (리셋 대비)
+                    finalMissionButton.style.display = 'none';
+                }
+            }
         }
 
-        // [수정] 'pageshow' 이벤트를 사용합니다.
+        // 'pageshow'는 페이지가 로드될 때, 그리고 bfcache에서 복원될 때 '모두' 실행됩니다.
         window.addEventListener('pageshow', function(event) {
             // 페이지가 표시될 때마다 버튼 상태를 새로고침합니다.
             checkMissionStatus();
         });
 
+        /* --- [JavaScript 수정/추가] --- */
+        // 4. DOM이 로드되었을 때 최종 미션 버튼에 클릭 이벤트 리스너를 '한 번만' 추가합니다.
+        document.addEventListener('DOMContentLoaded', function() {
+            const finalButton = document.getElementById('btn-final-mission');
+            if (finalButton) {
+                finalButton.addEventListener('click', function() {
+                    // 모든 변수를 '0'으로 리셋
+                    localStorage.setItem('seahorse', '0');
+                    localStorage.setItem('dolphin', '0');
+                    localStorage.setItem('turtle', '0');
+                    localStorage.setItem('octopus', '0');
+                    // <a> 태그의 href 속성에 의해 story3.html로의 이동은 자동으로 이루어집니다.
+                });
+            }
+        });
+        /* --- [JavaScript 수정 끝] --- */
     </script>
 </body>
 </html>
+```
