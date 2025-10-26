@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>첫번째 요원 AR 인식 (Marker 1)</title>
+    <title>첫번째 요원 AR 인식</title>
     
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
@@ -37,7 +37,7 @@
         <a-marker id="ar-marker1" type='pattern' url='person1.patt'>
             
             <a-image 
-                src="images/overlay-person1.png" rotation="-90 0 0" 
+                src="images/overlay-person.png" rotation="-90 0 0" 
                 scale="5 5 5"
                 position="0 0.1 0">
             </a-image>
@@ -48,7 +48,7 @@
     </a-scene>
 
     <div class="button-container">
-        <button id="action-button">지정된 페이지1 로 이동</button>
+        <button id="action-button">미션 확인하기</button>
     </div>
 
     <script>
@@ -80,7 +80,7 @@
             button.addEventListener('click', function() {
                 console.log('버튼이 클릭되었습니다!');
                 // ▼ 중요: person1.html에서 이동할 페이지 URL
-                window.location.href = 'page1.html'; 
+                window.location.href = 'scene-seahorse.html'; 
             });
             
             // 오버레이 회전 고정 로직 (선택적)
