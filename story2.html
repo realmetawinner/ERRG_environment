@@ -88,7 +88,7 @@
         }
 
         /* 마우스를 올렸을 때 효과 */
-        .mission-btn:hover {
+        .mission-btn:not(.completed):hover {
             background-color: #ffffff;
             transform: scale(1.02); /* 살짝 커지는 효과 */
             box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
@@ -100,6 +100,19 @@
             font-weight: bold;
             color: #888;
         }
+
+        /* [추가된 CSS] 완료된 버튼 스타일 */
+        .mission-btn.completed {
+            background-color: #6c757d; /* 회색 배경 */
+            color: #ccc; /* 밝은 회색 텍스트 */
+            pointer-events: none; /* 클릭 비활성화 */
+            cursor: not-allowed;
+        }
+
+        .mission-btn.completed .arrow {
+            color: #999;
+        }
+
     </style>
 </head>
 <body>
@@ -116,22 +129,22 @@
         </p>
 
         <nav class="mission-buttons">
-            <a href="person1.html" class="mission-btn">
+            <a href="person1.html" class="mission-btn" id="btn-mission1">
                 <span>해마를 구해줘</span>
                 <span class="arrow">&gt;</span>
             </a>
             
-            <a href="person2.html" class="mission-btn">
+            <a href="person2.html" class="mission-btn" id="btn-mission2">
                 <span>돌고래를 구해줘</span>
                 <span class="arrow">&gt;</span>
             </a>
 
-            <a href="person3.html" class="mission-btn">
+            <a href="person3.html" class="mission-btn" id="btn-mission3">
                 <span>거북이를 구해줘</span>
                 <span class="arrow">&gt;</span>
             </a>
 
-            <a href="person4.html" class="mission-btn">
+            <a href="person4.html" class="mission-btn" id="btn-mission4">
                 <span>문어를 구해줘</span>
                 <span class="arrow">&gt;</span>
             </a>
@@ -139,5 +152,31 @@
 
     </div>
 
+    <script>
+        // 페이지가 로드될 때 실행
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            function updateMissionButton(buttonId, localStorageKey) {
+                const button = document.getElementById(buttonId);
+                if (button && localStorage.getItem(localStorageKey) === '1') {
+                    button.classList.add('completed');
+                    // 버튼 텍스트를 "미션 완료"로 변경
+                    button.querySelector('span:first-child').textContent = '미션 완료';
+                }
+            }
+
+            // (success-seahorse -> 'dolphin' 변수 -> 첫번째 버튼)
+            updateMissionButton('btn-mission1', 'dolphin');
+
+            // (success-dolphin -> 'seahorse' 변수 -> 두번째 버튼)
+            updateMissionButton('btn-mission2', 'seahorse');
+
+            // (success-turtle -> 'turtle' 변수 -> 세번째 버튼)
+            updateMissionButton('btn-mission3', 'turtle');
+
+            // (success-octopus -> 'octopus' 변수 -> 네번째 버튼)
+            updateMissionButton('btn-mission4', 'octopus');
+        });
+    </script>
 </body>
 </html>
