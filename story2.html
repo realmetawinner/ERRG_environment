@@ -5,35 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>데빌기업 비밀연구소</title>
     <style>
-        /* * 기본 스타일 리셋 및 페이지 분위기 설정
-         */
+        /* ... (style 태그 내용은 이전과 동일) ... */
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box; /* padding과 border가 너비에 포함되도록 설정 */
+            box-sizing: border-box; 
         }
 
         body {
-            /* 판타지 + 비밀연구소 느낌의 어두운 그라데이션 배경 */
             background: linear-gradient(180deg, #0a0f2c 0%, #000000 100%);
-            color: #e0e0e0; /* 기본 텍스트 색상 (밝은 회색) */
+            color: #e0e0e0; 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
             min-height: 100vh;
             padding: 20px;
         }
 
-        /* * 메인 컨텐츠 영역 
-         */
         .container {
-            max-width: 600px; /* 모바일 화면에 최적화된 최대 너비 */
-            margin: 0 auto;   /* 중앙 정렬 */
+            max-width: 600px; 
+            margin: 0 auto;  
             text-align: center;
         }
 
-        /* * 본문 텍스트 스타일 
-         */
         h2 {
-            font-size: 1.6rem; /* 2025년 데빌기업... */
+            font-size: 1.6rem; 
             font-weight: 600;
             margin-top: 30px;
             margin-bottom: 25px;
@@ -42,83 +36,68 @@
         }
 
         p {
-            font-size: 1rem; /* 중학교처럼 보이는... */
+            font-size: 1rem; 
             line-height: 1.7;
             margin-bottom: 40px;
-            color: #c0c0c0; /* 본문 텍스트는 제목보다 약간 어둡게 */
+            color: #c0c0c0; 
         }
 
-        /* * 이미지 스타일 
-         */
         .story-image {
-            width: 100%; /* 컨테이너 너비에 맞춤 */
-            max-width: 400px; /* 이미지가 너무 커지는 것 방지 */
+            width: 100%; 
+            max-width: 400px; 
             height: auto;
-            border-radius: 12px; /* 모서리를 둥글게 */
+            border-radius: 12px; 
             margin-bottom: 25px;
-            border: 1px solid #333; /* 얇은 테두리 */
+            border: 1px solid #333; 
         }
 
-        /* * 버튼 리스트 컨테이너
-         */
         .mission-buttons {
             display: flex;
             flex-direction: column;
-            gap: 12px; /* 버튼 사이의 간격 */
+            gap: 12px; 
         }
-
-        /* * 개별 버튼 스타일 (첨부파일 참조)
-         */
+        
         .mission-btn {
-            display: flex; /* 텍스트와 화살표를 양쪽으로 정렬 */
+            display: flex; 
             justify-content: space-between;
             align-items: center;
-            
-            background-color: #f0f4f8; /* 밝은 회색 배경 (첨부파일 참조) */
-            color: #2c3e50; /* 어두운 텍스트 색상 */
-            
+            background-color: #f0f4f8; 
+            color: #2c3e50; 
             padding: 16px 20px;
-            border-radius: 12px; /* 둥근 모서리 */
-            
-            text-decoration: none; /* 링크 밑줄 제거 */
+            border-radius: 12px; 
+            text-decoration: none; 
             font-size: 1.1rem;
             font-weight: 600;
-            
-            transition: all 0.2s ease-in-out; /* 부드러운 호버 효과 */
+            transition: all 0.2s ease-in-out; 
         }
-
-        /* 마우스를 올렸을 때 효과 */
+        
         .mission-btn:not(.completed):hover {
             background-color: #ffffff;
-            transform: scale(1.02); /* 살짝 커지는 효과 */
+            transform: scale(1.02); 
             box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
         }
 
-        /* 버튼 안의 화살표(>) 스타일 */
         .mission-btn .arrow {
             font-size: 1.5rem;
             font-weight: bold;
             color: #888;
         }
-
-        /* [추가된 CSS] 완료된 버튼 스타일 */
+        
         .mission-btn.completed {
-            background-color: #6c757d; /* 회색 배경 */
-            color: #ccc; /* 밝은 회색 텍스트 */
-            pointer-events: none; /* 클릭 비활성화 */
+            background-color: #6c757d; 
+            color: #ccc; 
+            pointer-events: none; 
             cursor: not-allowed;
         }
 
         .mission-btn.completed .arrow {
             color: #999;
         }
-
     </style>
 </head>
 <body>
 
     <div class="container">
-
         <h2>타임머신을 타고 도착한 이곳은 2025년의 데빌기업의 비밀연구소입니다.</h2>
 
         <img src="images/story2/school.png" alt="데빌기업 비밀연구소 전경" class="story-image">
@@ -153,30 +132,46 @@
     </div>
 
     <script>
-        // 페이지가 로드될 때 실행
-        document.addEventListener('DOMContentLoaded', function() {
+        // 버튼 상태를 확인하고 업데이트하는 함수
+        function checkMissionStatus() {
             
+            // 버튼 하나를 업데이트하는 내부 헬퍼 함수
             function updateMissionButton(buttonId, localStorageKey) {
                 const button = document.getElementById(buttonId);
+                // [개선] 버튼이 존재하고, 스토리지 값이 '1'일 때만 업데이트
                 if (button && localStorage.getItem(localStorageKey) === '1') {
                     button.classList.add('completed');
-                    // 버튼 텍스트를 "미션 완료"로 변경
                     button.querySelector('span:first-child').textContent = '미션 완료';
+                } 
+                // [추가] 만약 스토리지 값이 '1'이 아니라면 (예: success-fish로 초기화된 경우)
+                // 버튼을 원래 상태로 되돌립니다.
+                else if (button) {
+                    button.classList.remove('completed');
+                    // 텍스트도 원래대로 돌려야 합니다. (각 버튼의 원래 텍스트로)
+                    // 이 예제에서는 텍스트를 하드코딩합니다.
+                    const originalTexts = {
+                        'btn-mission1': '해마를 구해줘',
+                        'btn-mission2': '돌고래를 구해줘',
+                        'btn-mission3': '거북이를 구해줘',
+                        'btn-mission4': '문어를 구해줘'
+                    };
+                    button.querySelector('span:first-child').textContent = originalTexts[buttonId];
                 }
             }
 
-            // (success-seahorse -> 'dolphin' 변수 -> 첫번째 버튼)
+            // 모든 버튼에 대해 업데이트 실행
             updateMissionButton('btn-mission1', 'dolphin');
-
-            // (success-dolphin -> 'seahorse' 변수 -> 두번째 버튼)
             updateMissionButton('btn-mission2', 'seahorse');
-
-            // (success-turtle -> 'turtle' 변수 -> 세번째 버튼)
             updateMissionButton('btn-mission3', 'turtle');
-
-            // (success-octopus -> 'octopus' 변수 -> 네번째 버튼)
             updateMissionButton('btn-mission4', 'octopus');
+        }
+
+        // [수정] 'pageshow' 이벤트를 사용합니다.
+        window.addEventListener('pageshow', function(event) {
+            // 페이지가 표시될 때마다 버튼 상태를 새로고침합니다.
+            checkMissionStatus();
         });
+
     </script>
 </body>
 </html>
