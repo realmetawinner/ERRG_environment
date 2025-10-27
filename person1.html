@@ -1,63 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>첫번째 요원 AR</title>
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-            font-family: sans-serif;
-        }
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            position: absolute;
-            z-index: 1;
-        }
-        /* 안내 문구 스타일 수정: 글자 크기(font-size)를 키웠습니다. */
-        #ar-guide {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%); /* 중앙 정렬 */
-            background-color: rgba(0, 0, 0, 0.8); /* 배경을 조금 더 진하게 */
-            color: white;
-            padding: 25px 40px; /* 패딩 증가 */
-            border-radius: 10px;
-            font-size: 1.5em; /* 폰트 크기 증가 (1.2em -> 1.5em) */
-            font-weight: bold; /* 글자를 더 굵게 */
-            text-align: center;
-            z-index: 2; /* AR 창 위에 오버레이 */
-            pointer-events: none; /* 클릭을 iframe으로 통과시키기 위해 추가 */
-        }
-    </style>
-</head>
+    </head>
 <body>
-
-<div id="ar-guide">
-    사원증의 얼굴을 인식시켜주세요
-</div>
-
 <iframe
+  id="arIframe"
   src="https://realmetawinner.8thwall.app/ar-person-seahorse/"
   allowfullscreen
   allow="camera; microphone; geolocation; accelerometer; magnetometer; gyroscope; autoplay; clipboard-read; clipboard-write; fullscreen"
 ></iframe>
 
 <script>
-    // 10초(10000ms) 후 안내 문구를 숨기도록 타이머 설정
-    setTimeout(function() {
-        const guide = document.getElementById('ar-guide');
-        if (guide) {
-            // 문구를 서서히 사라지게 하려면 'opacity: 0;'와 CSS transition을 사용합니다.
-            // 여기서는 간단하게 'display: none;'으로 완전히 제거합니다.
-            guide.style.display = 'none';
+    // 🚨 핵심: 부모 창에서 이동할 목표 경로를 직접 관리합니다.
+    const TARGET_MISSION_PAGE = 'mission-seahorse.html';
+    // 또는 절대 URL: const TARGET_MISSION_PAGE = 'https://your-netlify-site.app/mission-seahorse.html';
+
+    window.addEventListener('message', function(event) {
+        // 메시지 타입이 'AR_BUTTON_CLICKED'인지 확인
+        if (event.data && event.data.type === 'AR_BUTTON_CLICKED') {
+            
+            // 버튼 클릭 메시지를 받은 후, 정의된 목표 경로로 페이지 전환을 실행합니다.
+            window.location.assign(TARGET_MISSION_PAGE);
         }
-    }, 10000);
+    });
+    
+    // 5초 후 안내 문구 숨김 로직 등 다른 스크립트 코드는 여기에 유지됩니다.
+    // ...
 </script>
 </body>
 </html>
