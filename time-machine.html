@@ -52,83 +52,80 @@
         <div class="flex flex-col items-center gap-4">
             
             <h2 class="text-xl font-semibold text-gray-300">이동년도</h2>
-            <!-- 상단 행: 숫자 다이얼 -->
-            <div class="flex justify-center gap-2 md:gap-4">
-                <!-- 숫자 다이얼 1 -->
-                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
-                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="0">▲</button>
-                    <!-- *** 수정: 모바일 크기 w-14, h-16, text-5xl로 조정 *** -->
-                    <div id="dial-0" class="dial-value text-5xl sm:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-14 sm:w-16 md:w-20 h-16 sm:h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">0</div>
-                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="0">▼</button>
+            <!-- 상단 행: 숫자 다이얼 (*** 수정: gap-1 sm:gap-2 ***) -->
+            <div class="flex justify-center gap-1 sm:gap-2 md:gap-4">
+                <!-- 숫자 다이얼 1 (*** 수정: p-1 sm:p-2 ***) -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-1 sm:p-2 rounded-lg shadow-inner">
+                    <!-- *** 수정: text-2xl sm:text-3xl *** -->
+                    <button class="dial-btn up-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="0">▲</button>
+                    <!-- *** 수정: 모바일 크기 w-12, h-14, text-4xl, my-1로 축소 *** -->
+                    <div id="dial-0" class="dial-value text-4xl sm:text-5xl md:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-12 sm:w-14 md:w-20 h-14 sm:h-16 md:h-24 flex items-center justify-center rounded-md my-1 sm:my-2 border-2 border-gray-600">0</div>
+                    <!-- *** 수정: text-2xl sm:text-3xl *** -->
+                    <button class="dial-btn down-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="0">▼</button>
                 </div>
                 <!-- 숫자 다이얼 2 -->
-                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
-                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="1">▲</button>
-                    <!-- *** 수정: 모바일 크기 w-14, h-16, text-5xl로 조정 *** -->
-                    <div id="dial-1" class="dial-value text-5xl sm:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-14 sm:w-16 md:w-20 h-16 sm:h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">0</div>
-                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="1">▼</button>
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-1 sm:p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="1">▲</button>
+                    <div id="dial-1" class="dial-value text-4xl sm:text-5xl md:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-12 sm:w-14 md:w-20 h-14 sm:h-16 md:h-24 flex items-center justify-center rounded-md my-1 sm:my-2 border-2 border-gray-600">0</div>
+                    <button class="dial-btn down-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="1">▼</button>
                 </div>
                 <!-- 숫자 다이얼 3 -->
-                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
-                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="2">▲</button>
-                    <!-- *** 수정: 모바일 크기 w-14, h-16, text-5xl로 조정 *** -->
-                    <div id="dial-2" class="dial-value text-5xl sm:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-14 sm:w-16 md:w-20 h-16 sm:h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">0</div>
-                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="2">▼</button>
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-1 sm:p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="2">▲</button>
+                    <div id="dial-2" class="dial-value text-4xl sm:text-5xl md:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-12 sm:w-14 md:w-20 h-14 sm:h-16 md:h-24 flex items-center justify-center rounded-md my-1 sm:my-2 border-2 border-gray-600">0</div>
+                    <button class="dial-btn down-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="2">▼</button>
                 </div>
                 <!-- 숫자 다이얼 4 -->
-                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
-                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="3">▲</button>
-                    <!-- *** 수정: 모바일 크기 w-14, h-16, text-5xl로 조정 *** -->
-                    <div id="dial-3" class="dial-value text-5xl sm:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-14 sm:w-16 md:w-20 h-16 sm:h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">0</div>
-                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="3">▼</button>
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-1 sm:p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="3">▲</button>
+                    <div id="dial-3" class="dial-value text-4xl sm:text-5xl md:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-12 sm:w-14 md:w-20 h-14 sm:h-16 md:h-24 flex items-center justify-center rounded-md my-1 sm:my-2 border-2 border-gray-600">0</div>
+                    <button class="dial-btn down-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="3">▼</button>
                 </div>
             </div>
 
             <h2 class="text-xl font-semibold text-gray-300 mt-4">장소</h2>
-            <!-- 하단 행: 알파벳 다이얼 -->
-            <div class="flex justify-center gap-2 md:gap-4">
-                <!-- 알파벳 다이얼 1 -->
-                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
-                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="4">▲</button>
-                    <!-- *** 수정: 모바일 크기 w-14, h-16, text-5xl로 조정 *** -->
-                    <div id="dial-4" class="dial-value text-5xl sm:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-14 sm:w-16 md:w-20 h-16 sm:h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
-                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="4">▼</button>
+            <!-- 하단 행: 알파벳 다이얼 (*** 수정: gap-1 sm:gap-2 ***) -->
+            <div class="flex justify-center gap-1 sm:gap-2 md:gap-4">
+                <!-- 알파벳 다이얼 1 (*** 수정: p-1 sm:p-2 ***) -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-1 sm:p-2 rounded-lg shadow-inner">
+                    <!-- *** 수정: text-2xl sm:text-3xl *** -->
+                    <button class="dial-btn up-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="4">▲</button>
+                    <!-- *** 수정: 모바일 크기 w-12, h-14, text-4xl, my-1로 축소 *** -->
+                    <div id="dial-4" class="dial-value text-4xl sm:text-5xl md:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-12 sm:w-14 md:w-20 h-14 sm:h-16 md:h-24 flex items-center justify-center rounded-md my-1 sm:my-2 border-2 border-gray-600">D</div>
+                    <!-- *** 수정: text-2xl sm:text-3xl *** -->
+                    <button class="dial-btn down-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="4">▼</button>
                 </div>
                 <!-- 알파벳 다이얼 2 -->
-                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
-                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="5">▲</button>
-                    <!-- *** 수정: 모바일 크기 w-14, h-16, text-5xl로 조정 *** -->
-                    <div id="dial-5" class="dial-value text-5xl sm:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-14 sm:w-16 md:w-20 h-16 sm:h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
-                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="5">▼</button>
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-1 sm:p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="5">▲</button>
+                    <div id="dial-5" class="dial-value text-4xl sm:text-5xl md:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-12 sm:w-14 md:w-20 h-14 sm:h-16 md:h-24 flex items-center justify-center rounded-md my-1 sm:my-2 border-2 border-gray-600">D</div>
+                    <button class="dial-btn down-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="5">▼</button>
                 </div>
                 <!-- 알파벳 다이얼 3 -->
-                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
-                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="6">▲</button>
-                    <!-- *** 수정: 모바일 크기 w-14, h-16, text-5xl로 조정 *** -->
-                    <div id="dial-6" class="dial-value text-5xl sm:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-14 sm:w-16 md:w-20 h-16 sm:h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
-                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="6">▼</button>
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-1 sm:p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="6">▲</button>
+                    <div id="dial-6" class="dial-value text-4xl sm:text-5xl md:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-12 sm:w-14 md:w-20 h-14 sm:h-16 md:h-24 flex items-center justify-center rounded-md my-1 sm:my-2 border-2 border-gray-600">D</div>
+                    <button class="dial-btn down-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="6">▼</button>
                 </div>
                 <!-- 알파벳 다이얼 4 -->
-                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
-                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="7">▲</button>
-                    <!-- *** 수정: 모바일 크기 w-14, h-16, text-5xl로 조정 *** -->
-                    <div id="dial-7" class="dial-value text-5xl sm:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-14 sm:w-16 md:w-20 h-16 sm:h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
-                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="7">▼</button>
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-1 sm:p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="7">▲</button>
+                    <div id="dial-7" class="dial-value text-4xl sm:text-5xl md:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-12 sm:w-14 md:w-20 h-14 sm:h-16 md:h-24 flex items-center justify-center rounded-md my-1 sm:my-2 border-2 border-gray-600">D</div>
+                    <button class="dial-btn down-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="7">▼</button>
                 </div>
                 <!-- 알파벳 다이얼 5 -->
-                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
-                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="8">▲</button>
-                    <!-- *** 수정: 모바일 크기 w-14, h-16, text-5xl로 조정 *** -->
-                    <div id="dial-8" class="dial-value text-5xl sm:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-14 sm:w-16 md:w-20 h-16 sm:h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
-                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="8">▼</button>
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-1 sm:p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="8">▲</button>
+                    <div id="dial-8" class="dial-value text-4xl sm:text-5xl md:text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-12 sm:w-14 md:w-20 h-14 sm:h-16 md:h-24 flex items-center justify-center rounded-md my-1 sm:my-2 border-2 border-gray-600">D</div>
+                    <button class="dial-btn down-btn text-2xl sm:text-3xl text-gray-400 hover:text-white transition-colors" data-index="8">▼</button>
                 </div>
             </div>
             
         </div>
 
-        <!-- 이동하기 버튼 -->
+        <!-- 이동하기 버튼 (*** 수정: py-3 sm:py-4 ***) -->
         <div class="mt-8 text-center">
-            <button id="submit-btn" class="w-full max-w-xs bg-cyan-600 hover:bg-cyan-500 text-white text-2xl font-bold py-4 px-8 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105">
+            <button id="submit-btn" class="w-full max-w-xs bg-cyan-600 hover:bg-cyan-500 text-white text-2xl font-bold py-3 sm:py-4 px-8 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105">
                 이동하기
             </button>
         </div>
