@@ -17,10 +17,8 @@
             box-shadow: none;
         }
         
-        /* 모달 숨김/표시 */
-        .modal-hidden {
-            display: none;
-        }
+        /* --- 'modal-hidden' 클래스 정의 삭제 --- */
+        /* 이제 Tailwind의 'hidden' 클래스를 직접 사용합니다. */
 
         /* Tailwind의 'animate-spin'은 1초에 한 바퀴입니다.
            3초 카운트다운에 맞춰 3초에 한 바퀴 돌도록 'animate-spin-slow'를 정의합니다.
@@ -133,8 +131,11 @@
 
     </div>
 
-    <!-- 모달 팝업 (초기 숨김) -->
-    <div id="modal" class="modal-hidden fixed inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center z-50">
+    <!-- 
+      모달 팝업 (초기 숨김) 
+      *** 수정: 'modal-hidden' 대신 Tailwind의 'hidden' 클래스를 사용합니다. ***
+    -->
+    <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center z-50">
         <div class="bg-gray-800 p-8 rounded-xl shadow-2xl flex flex-col items-center">
             <img id="modal-image" 
                  src="story1/machine1.png" 
@@ -240,9 +241,14 @@
                         // 페이지 이동
                         if (TARGET_URL === 'YOUR_TARGET_PAGE.html') {
                             // 모달 닫고 알림 (실제 사용 시 이 부분 수정)
-                            modal.classList.add('modal-hidden');
+                            modal.classList.add('hidden'); // *** 'modal-hidden' -> 'hidden'으로 수정 ***
                             modalImage.classList.remove('animate-spin-slow');
-                            alert('성공! 하지만 TARGET_URL이 설정되지 않았습니다. 코드의 TARGET_URL 변수를 수정해주세요.');
+                            // alert()는 팝업창에서 작동이 불안정할 수 있으므로, console.log로 대체하거나
+                            // 혹은 statusEl에 메시지를 표시하는 것이 더 좋습니다.
+                            console.log('성공! 하지만 TARGET_URL이 설정되지 않았습니다.');
+                            statusEl.textContent = "TARGET_URL을 설정해주세요.";
+                            statusEl.classList.remove('text-green-500');
+                            statusEl.classList.add('text-yellow-500');
                         } else {
                             window.location.href = TARGET_URL;
                         }
@@ -274,7 +280,7 @@
                     statusEl.classList.add('text-green-500');
                     
                     // 모달 보이기
-                    modal.classList.remove('modal-hidden');
+                    modal.classList.remove('hidden'); // *** 'modal-hidden' -> 'hidden'으로 수정 ***
                     
                     // 카운트다운 시작
                     startCountdown();
@@ -292,3 +298,4 @@
 
 </body>
 </html>
+
