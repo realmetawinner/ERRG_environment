@@ -3,124 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>데빌기업 비밀연구소</title>
+    <title>미션 암호</title>
+    <!-- Tailwind CSS 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter 폰트 로드 -->
     <style>
-        /* * 기본 스타일 리셋 및 페이지 분위기 설정
-         */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box; /* padding과 border가 너비에 포함되도록 설정 */
-        }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
         body {
-            /* 판타지 + 비밀연구소 느낌의 어두운 그라데이션 배경 */
-            background: linear-gradient(180deg, #0a0f2c 0%, #000000 100%);
-            color: #e0e0e0; /* 기본 텍스트 색상 (밝은 회색) */
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans KR', sans-serif;
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
         }
-
-        /* * 메인 컨텐츠 영역 
-         */
-        .container {
-            max-width: 600px; /* 모바일 화면에 최적화된 최대 너비 */
-            margin: 0 auto;   /* 중앙 정렬 */
-            text-align: center;
+        /* 잘못된 암호 입력 시 흔들림 애니메이션 */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
         }
-
-        /* * 본문 텍스트 스타일 
-         */
-        h2 {
-            font-size: 1.6rem; /* 2025년 데빌기업... */
-            font-weight: 600;
-            margin-top: 30px;
-            margin-bottom: 25px;
-            line-height: 1.5;
-            color: #ffffff;
-        }
-
-        p {
-            font-size: 1rem; /* 중학교처럼 보이는... */
-            line-height: 1.7;
-            margin-bottom: 40px;
-            color: #c0c0c0; /* 본문 텍스트는 제목보다 약간 어둡게 */
-        }
-
-        /* * 이미지 스타일 
-         */
-        .story-image {
-            width: 100%; /* 컨테이너 너비에 맞춤 */
-            max-width: 400px; /* 이미지가 너무 커지는 것 방지 */
-            height: auto;
-            border-radius: 12px; /* 모서리를 둥글게 */
-            margin-bottom: 25px;
-            border: 1px solid #333; /* 얇은 테두리 */
-        }
-
-        /* * 버튼 리스트 컨테이너
-         */
-        .mission-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px; /* 버튼 사이의 간격 */
-        }
-
-        /* * 개별 버튼 스타일 (첨부파일 참조)
-         */
-        .mission-btn {
-            display: flex; /* 텍스트와 화살표를 양쪽으로 정렬 */
-            justify-content: space-between;
-            align-items: center;
-            
-            background-color: #f0f4f8; /* 밝은 회색 배경 (첨부파일 참조) */
-            color: #2c3e50; /* 어두운 텍스트 색상 */
-            
-            padding: 16px 20px;
-            border-radius: 12px; /* 둥근 모서리 */
-            
-            text-decoration: none; /* 링크 밑줄 제거 */
-            font-size: 1.1rem;
-            font-weight: 600;
-            
-            transition: all 0.2s ease-in-out; /* 부드러운 호버 효과 */
-        }
-
-        /* 마우스를 올렸을 때 효과 */
-        .mission-btn:hover {
-            background-color: #ffffff;
-            transform: scale(1.02); /* 살짝 커지는 효과 */
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-        }
-
-        /* 버튼 안의 화살표(>) 스타일 */
-        .mission-btn .arrow {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #888;
+        .shake {
+            animation: shake 0.5s ease-in-out;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-6">
 
-    <div class="container">
+    <!-- 메인 컨텐츠 컨테이너 -->
+    <div id="main-container" class="bg-gray-800 p-8 md:p-12 rounded-2xl shadow-2xl w-full max-w-md text-center">
+        
+        <!-- 1. 이미지 (원형 및 테두리 제거) -->
+        <img 
+            src="images/story3.png" 
+            alt="스토리 이미지"
+            class="w-48 h-48 mx-auto mb-8 object-cover shadow-lg rounded-lg" <!-- 원형(rounded-full) 및 테두리(border-*) 제거, 약간 둥근 모서리(rounded-lg) 추가 -->
+            <!-- 이미지 로드 실패 시 자리 표시자 이미지로 대체 -->
+            onerror="this.onerror=null; this.src='https://placehold.co/192x192/4A5568/E2E8F0?text=images/story3.png';"
+        >
 
-        <h2>-2025년의 데빌기업의 비밀연구-</h2>
-
-        <img src="images/story2/school.png" alt="데빌기업 비밀연구소 전경" class="story-image">
-
-        <p>
-            이제 여러분들은 모두의 힘을 합쳐 마지막 미션을 수행해야 합니다.
+        <!-- 2. 텍스트 -->
+        <p class="text-lg text-gray-300 mb-6">
+            암호를 입력해 미션을 확인하세요.
         </p>
 
-        <nav class="mission-buttons">
-            <a href="scene-fish.html" class="mission-btn">
-                <span>흰동가리를 구해줘</span>
-                <span class="arrow">&gt;</span>
-        </nav>
+        <!-- 3. 입력창 및 버튼 -->
+        <div class="space-y-4">
+            <input 
+                type="password" 
+                id="passwordInput" 
+                class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                placeholder="영어로 입력하세요"
+            >
+            <button 
+                id="submitButton"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75"
+            >
+                입력
+            </button>
+        </div>
+
+        <!-- 오류 메시지 (초기에는 숨김) -->
+        <p id="errorMessage" class="text-red-400 text-sm mt-4 hidden">
+            암호가 틀렸습니다.
+        </p>
 
     </div>
 
+    <script>
+        // DOM 요소 가져오기
+        const passwordInput = document.getElementById('passwordInput');
+        const submitButton = document.getElementById('submitButton');
+        const errorMessage = document.getElementById('errorMessage');
+        const mainContainer = document.getElementById('main-container');
+
+        // 암호 확인 함수
+        function checkPassword() {
+            // 입력된 값 가져오기
+            const password = passwordInput.value;
+
+            // 암호 확인
+            if (password === "ANGEL") {
+                // 성공: scene-fish.html로 이동
+                window.location.href = 'scene-fish.html';
+            } else {
+                // 실패: 오류 메시지 표시 및 애니메이션
+                errorMessage.classList.remove('hidden'); // 오류 메시지 보이기
+                mainContainer.classList.add('shake'); // 컨테이너 흔들기
+
+                // 애니메이션이 끝난 후 클래스 제거
+                setTimeout(() => {
+                    mainContainer.classList.remove('shake');
+                }, 500);
+
+                // 입력창 비우기
+                passwordInput.value = '';
+                passwordInput.focus();
+            }
+        }
+
+        // 1. 버튼 클릭 시 암호 확인
+        submitButton.addEventListener('click', checkPassword);
+
+        // 2. 엔터 키 입력 시 암호 확인
+        passwordInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                checkPassword();
+            }
+            // 키 입력 시 오류 메시지 숨기기
+            errorMessage.classList.add('hidden');
+        });
+    </script>
+
 </body>
 </html>
+
