@@ -3,85 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>비밀 연구소 잠입</title>
+    <title>타임머신 조작기</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* Inter 폰트 적용 (Tailwind 기본 폰트) */
         body {
-            /* 바다 속 판타지 느낌의 배경 */
-            background: linear-gradient(to bottom, #023047, #005f73, #0a9396);
-            color: #ffffff; /* 텍스트 색상을 밝게 */
-            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        /* 버튼 포커스 시 외곽선 제거 (Tailwind 기본값) */
+        .dial-btn:focus, #submit-btn:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        
+        /* 모달 숨김/표시 */
+        .modal-hidden {
+            display: none;
         }
 
-        .container {
-            text-align: center;
-            background-color: rgba(0, 0, 0, 0.3); /* 반투명 배경 */
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            max-width: 600px;
-            width: 100%;
+        /* Tailwind의 'animate-spin'은 1초에 한 바퀴입니다.
+           3초 카운트다운에 맞춰 3초에 한 바퀴 돌도록 'animate-spin-slow'를 정의합니다.
+        */
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
         }
-
-        h1 {
-            color: #94d2bd; /* 제목 색상 */
-            font-size: 2.5em;
-            margin-bottom: 25px;
-            text-shadow: 2px 2px 4px #000;
-        }
-
-        p {
-            font-size: 1.2em;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-            border: 3px solid #94d2bd;
-            margin-bottom: 30px;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: #ee9b00; /* 버튼 색상 */
-            color: #023047; /* 버튼 텍스트 색상 */
-            padding: 12px 25px;
-            font-size: 1.2em;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #ffb703;
-            transform: scale(1.05);
+        .animate-spin-slow {
+          animation: spin 3s linear infinite;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
 
-    <div class="container">
-        <h1>타임머신 내부</h1>
+    <!-- 메인 컨텐츠 컨테이너 -->
+    <div class="bg-gray-800 p-6 md:p-8 rounded-xl shadow-2xl w-full max-w-2xl">
+        
+        <h1 class="text-3xl font-bold text-center mb-4 text-cyan-400">타임머신을 조작하세요</h1>
 
-        <p>
-            이제 여러분은 이 타임머신의 문을 열고 나가면<br>
-            데빌기업의 비밀 연구소로 잠입합니다.<br>
-            그 곳에서는 여러분들이 각자 미션을 수행해야합니다.
-        </p>
+        <!-- 타임머신 이미지 -->
+        <div class="flex justify-center mb-6">
+            <img id="machine-image" 
+                 src="story1/machine1.png" 
+                 alt="타임머신" 
+                 class="w-full max-w-sm h-auto rounded-lg shadow-lg object-cover bg-gray-700"
+                 onerror="this.src='https://placehold.co/600x400/334155/94a3b8?text=Time+Machine'; this.onerror=null;">
+        </div>
 
-        <img src="images/story1/machine1.png" alt="타임머신 이미지">
+        <!-- 다이얼 잠금 장치 컨테이너 (세로 정렬) -->
+        <div class="flex flex-col items-center gap-4">
+            
+            <h2 class="text-xl font-semibold text-gray-300">이동년도</h2>
+            <!-- 상단 행: 숫자 다이얼 -->
+            <div class="flex justify-center gap-2 md:gap-4">
+                <!-- 숫자 다이얼 1 -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="0">▲</button>
+                    <div id="dial-0" class="dial-value text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-16 md:w-20 h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">0</div>
+                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="0">▼</button>
+                </div>
+                <!-- 숫자 다이얼 2 -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="1">▲</button>
+                    <div id="dial-1" class="dial-value text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-16 md:w-20 h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">0</div>
+                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="1">▼</button>
+                </div>
+                <!-- 숫자 다이얼 3 -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="2">▲</button>
+                    <div id="dial-2" class="dial-value text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-16 md:w-20 h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">0</div>
+                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="2">▼</button>
+                </div>
+                <!-- 숫자 다이얼 4 -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="3">▲</button>
+                    <div id="dial-3" class="dial-value text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-16 md:w-20 h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">0</div>
+                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="3">▼</button>
+                </div>
+            </div>
 
-        <a href="story2.html" class="btn">다음미션</a>
+            <h2 class="text-xl font-semibold text-gray-300 mt-4">장소</h2>
+            <!-- 하단 행: 알파벳 다이얼 -->
+            <div class="flex justify-center gap-2 md:gap-4">
+                <!-- 알파벳 다이얼 1 -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="4">▲</button>
+                    <div id="dial-4" class="dial-value text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-16 md:w-20 h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
+                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="4">▼</button>
+                </div>
+                <!-- 알파벳 다이얼 2 -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="5">▲</button>
+                    <div id="dial-5" class="dial-value text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-16 md:w-20 h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
+                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="5">▼</button>
+                </div>
+                <!-- 알파벳 다이얼 3 -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="6">▲</button>
+                    <div id="dial-6" class="dial-value text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-16 md:w-20 h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
+                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="6">▼</button>
+                </div>
+                <!-- 알파벳 다이얼 4 -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="7">▲</button>
+                    <div id="dial-7" class="dial-value text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-16 md:w-20 h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
+                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="7">▼</button>
+                </div>
+                <!-- 알파벳 다이얼 5 -->
+                <div class="dial-container flex flex-col items-center bg-gray-700 p-2 rounded-lg shadow-inner">
+                    <button class="dial-btn up-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="8">▲</button>
+                    <div id="dial-8" class="dial-value text-6xl font-mono font-bold bg-black bg-opacity-50 text-cyan-400 w-16 md:w-20 h-20 md:h-24 flex items-center justify-center rounded-md my-2 border-2 border-gray-600">D</div>
+                    <button class="dial-btn down-btn text-3xl text-gray-400 hover:text-white transition-colors" data-index="8">▼</button>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- 이동하기 버튼 -->
+        <div class="mt-8 text-center">
+            <button id="submit-btn" class="w-full max-w-xs bg-cyan-600 hover:bg-cyan-500 text-white text-2xl font-bold py-4 px-8 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105">
+                이동하기
+            </button>
+        </div>
+
+        <!-- 상태 메시지 -->
+        <div id="status" class="text-center mt-6 text-2xl font-semibold text-gray-400 transition-colors h-8">
+            <!-- 초기 메시지 없음 -->
+        </div>
+
     </div>
+
+    <!-- 모달 팝업 (초기 숨김) -->
+    <div id="modal" class="modal-hidden fixed inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center z-50">
+        <div class="bg-gray-800 p-8 rounded-xl shadow-2xl flex flex-col items-center">
+            <img id="modal-image" 
+                 src="story1/machine1.png" 
+                 alt="타임머신 작동 중" 
+                 class="w-48 h-48 rounded-full shadow-lg object-cover bg-gray-700"
+                 onerror="this.src='https://placehold.co/400x400/334155/94a3b8?text=Warping...'; this.onerror=null;">
+            
+            <div id="countdown-timer" class="text-8xl font-mono font-bold text-cyan-400 mt-6">3</div>
+            <p class="text-xl text-white mt-2">시간 이동 중...</p>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- 설정 ---
+            const NUMBER_SET = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+            const LETTER_SET = ['D', 'E', 'V', 'I', 'L'];
+            const PASSWORD = '2025DEVIL';
+            
+            // !!! 중요 !!!
+            // 잠금 해제 시 이동할 URL을 여기에 입력하세요.
+            // 예: 'https://github.com/YourUsername/YourRepo/blob/main/secret.html'
+            const TARGET_URL = 'YOUR_TARGET_PAGE.html'; 
+
+            const DIAL_CONFIG = [
+                NUMBER_SET, NUMBER_SET, NUMBER_SET, NUMBER_SET, // 숫자 4개
+                LETTER_SET, LETTER_SET, LETTER_SET, LETTER_SET, LETTER_SET // 알파벳 5개
+            ];
+            
+            let dialIndices = [0, 0, 0, 0, 0, 0, 0, 0, 0]; // 초기값 0000DDDDD
+
+            // --- DOM 요소 ---
+            const upButtons = document.querySelectorAll('.up-btn');
+            const downButtons = document.querySelectorAll('.down-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const statusEl = document.getElementById('status');
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modal-image');
+            const countdownTimer = document.getElementById('countdown-timer');
+
+            let countdownInterval = null; // 카운트다운 interval ID
+
+            /**
+             * 다이얼 값을 업데이트하는 함수
+             * @param {number} index - 다이얼 인덱스 (0-8)
+             * @param {string} direction - 'up' 또는 'down'
+             */
+            function updateDial(index, direction) {
+                const config = DIAL_CONFIG[index];
+                const len = config.length;
+                let currentIndex = dialIndices[index];
+
+                if (direction === 'up') {
+                    currentIndex = (currentIndex + 1) % len;
+                } else if (direction === 'down') {
+                    currentIndex = (currentIndex - 1 + len) % len;
+                }
+
+                dialIndices[index] = currentIndex;
+                document.getElementById(`dial-${index}`).textContent = config[currentIndex];
+                
+                // 다이얼 조작 시 상태 메시지 초기화
+                statusEl.textContent = '';
+            }
+
+            /**
+             * 현재 다이얼 조합이 비밀번호와 일치하는지 확인하는 함수
+             * @returns {boolean} - 일치 여부
+             */
+            function checkPassword() {
+                let currentAttempt = '';
+                for (let i = 0; i < dialIndices.length; i++) {
+                    const config = DIAL_CONFIG[i];
+                    const index = dialIndices[i];
+                    currentAttempt += config[index];
+                }
+                return currentAttempt === PASSWORD;
+            }
+
+            /**
+             * 카운트다운 및 페이지 이동 시작
+             */
+            function startCountdown() {
+                let count = 3;
+                countdownTimer.textContent = count;
+                
+                // 이미지 회전 애니메이션 추가
+                modalImage.classList.add('animate-spin-slow');
+
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                }
+
+                countdownInterval = setInterval(() => {
+                    count--;
+                    countdownTimer.textContent = count;
+
+                    if (count <= 0) {
+                        clearInterval(countdownInterval);
+                        
+                        // 페이지 이동
+                        if (TARGET_URL === 'YOUR_TARGET_PAGE.html') {
+                            // 모달 닫고 알림 (실제 사용 시 이 부분 수정)
+                            modal.classList.add('modal-hidden');
+                            modalImage.classList.remove('animate-spin-slow');
+                            alert('성공! 하지만 TARGET_URL이 설정되지 않았습니다. 코드의 TARGET_URL 변수를 수정해주세요.');
+                        } else {
+                            window.location.href = TARGET_URL;
+                        }
+                    }
+                }, 1000);
+            }
+
+            // --- 이벤트 리스너 ---
+
+            // 다이얼 버튼
+            upButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    updateDial(parseInt(btn.dataset.index), 'up');
+                });
+            });
+
+            downButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    updateDial(parseInt(btn.dataset.index), 'down');
+                });
+            });
+
+            // "이동하기" 버튼
+            submitBtn.addEventListener('click', () => {
+                if (checkPassword()) {
+                    // 성공
+                    statusEl.textContent = '승인됨. 시간 이동을 시작합니다.';
+                    statusEl.classList.remove('text-red-500');
+                    statusEl.classList.add('text-green-500');
+                    
+                    // 모달 보이기
+                    modal.classList.remove('modal-hidden');
+                    
+                    // 카운트다운 시작
+                    startCountdown();
+
+                } else {
+                    // 실패
+                    statusEl.textContent = '좌표가 일치하지 않습니다.';
+                    statusEl.classList.remove('text-green-500');
+                    statusEl.classList.add('text-red-500');
+                }
+            });
+
+        });
+    </script>
 
 </body>
 </html>
