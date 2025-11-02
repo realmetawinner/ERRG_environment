@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>미션 암호</title>
-    <!-- Tailwind CSS 로드 -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inter 폰트 로드 -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
         body {
@@ -25,24 +23,18 @@
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-6">
 
-    <!-- 메인 컨텐츠 컨테이너 -->
     <div id="main-container" class="bg-gray-800 p-8 md:p-12 rounded-2xl shadow-2xl w-full max-w-md text-center">
         
-        <!-- 1. 이미지 (원형 및 테두리 제거) -->
         <img 
             src="images/story3.png" 
             alt="스토리 이미지"
-            class="w-48 h-48 mx-auto mb-8 object-cover shadow-lg rounded-lg" <!-- 원형(rounded-full) 및 테두리(border-*) 제거, 약간 둥근 모서리(rounded-lg) 추가 -->
-            <!-- 이미지 로드 실패 시 자리 표시자 이미지로 대체 -->
-            onerror="this.onerror=null; this.src='https://placehold.co/192x192/4A5568/E2E8F0?text=images/story3.png';"
+            class="w-48 h-48 mx-auto mb-8 object-cover shadow-lg" onerror="this.onerror=null; this.src='https://placehold.co/192x192/4A5568/E2E8F0?text=images/story3.png';"
         >
 
-        <!-- 2. 텍스트 -->
         <p class="text-lg text-gray-300 mb-6">
-            암호를 입력해 미션을 확인하세요.
+            암호를 영단어로 입력해 미션을 확인하세요.
         </p>
 
-        <!-- 3. 입력창 및 버튼 -->
         <div class="space-y-4">
             <input 
                 type="password" 
@@ -58,7 +50,6 @@
             </button>
         </div>
 
-        <!-- 오류 메시지 (초기에는 숨김) -->
         <p id="errorMessage" class="text-red-400 text-sm mt-4 hidden">
             암호가 틀렸습니다.
         </p>
@@ -112,4 +103,3 @@
 
 </body>
 </html>
-
