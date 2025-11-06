@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>미션 암호</title>
+    <title>사원증 단체 인식</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
@@ -32,7 +32,10 @@
         >
 
         <p class="text-lg text-gray-300 mb-6">
-            암호를 영단어로 입력해 미션을 확인하세요.
+            여러분의 단체미션입니다.<br>
+            사원증을 패턴에 맞게 합쳐보세요.<br>
+            그리고 숨겨진 암호를 찾아 입력하세요.<br>
+            (단, 암호는 영어입니다.)
         </p>
 
         <div class="space-y-4">
@@ -68,8 +71,9 @@
             // 입력된 값 가져오기
             const password = passwordInput.value;
 
-            // 암호 확인
-            if (password === "ANGEL") {
+            // ★★★ 수정된 부분 ★★★
+            // 입력값을 대문자로 변경하여 "ANGEL"과 비교
+            if (password.toUpperCase() === "ANGEL") {
                 // 성공: scene-fish.html로 이동
                 window.location.href = 'scene-fish.html';
             } else {
